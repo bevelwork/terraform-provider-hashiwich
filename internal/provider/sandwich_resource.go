@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -32,6 +33,7 @@ type SandwichResourceModel struct {
 	Description types.String `tfsdk:"description"`
 	BreadId     types.String `tfsdk:"bread_id"`
 	MeatId      types.String `tfsdk:"meat_id"`
+	Name        types.String `tfsdk:"name"`
 	Id          types.String `tfsdk:"id"`
 }
 
@@ -55,6 +57,13 @@ func (r *SandwichResource) Schema(ctx context.Context, req resource.SchemaReques
 			"meat_id": schema.StringAttribute{
 				MarkdownDescription: "The ID of the meat resource to use",
 				Required:            true,
+			},
+			"name": schema.StringAttribute{
+				Computed:            true,
+				MarkdownDescription: "The name of the sandwich in the format '{meat} on {bread}'",
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
 			},
 			"id": schema.StringAttribute{
 				Computed:            true,
@@ -89,6 +98,14 @@ func (r *SandwichResource) Create(ctx context.Context, req resource.CreateReques
 	// Simulate API delay
 	time.Sleep(300 * time.Millisecond)
 
+	// Extract meat and bread kinds from their IDs
+	meatKind := extractKindFromId(data.MeatId.ValueString(), "meat")
+	breadKind := extractKindFromId(data.BreadId.ValueString(), "bread")
+
+	// Generate name in format "{meat} on {bread}"
+	name := fmt.Sprintf("%s on %s", meatKind, breadKind)
+	data.Name = types.StringValue(name)
+
 	// Mock resource creation - generate a fake ID based on bread and meat IDs
 	id := fmt.Sprintf("sandwich-%s-%s", data.BreadId.ValueString(), data.MeatId.ValueString())
 	data.Id = types.StringValue(id)
@@ -115,6 +132,12 @@ func (r *SandwichResource) Read(ctx context.Context, req resource.ReadRequest, r
 
 	// Simulate API delay
 	time.Sleep(300 * time.Millisecond)
+
+	// Regenerate name from IDs in case bread_id or meat_id changed externally
+	meatKind := extractKindFromId(data.MeatId.ValueString(), "meat")
+	breadKind := extractKindFromId(data.BreadId.ValueString(), "bread")
+	name := fmt.Sprintf("%s on %s", meatKind, breadKind)
+	data.Name = types.StringValue(name)
 
 	// Mock resource read - just return the existing state
 	// In a real implementation, this would fetch from an API
@@ -143,13 +166,20 @@ func (r *SandwichResource) Update(ctx context.Context, req resource.UpdateReques
 		return
 	}
 
-	// If bread_id or meat_id changed, regenerate ID
+	// If bread_id or meat_id changed, regenerate ID and name
 	if !data.BreadId.Equal(state.BreadId) || !data.MeatId.Equal(state.MeatId) {
+		// Extract meat and bread kinds from their IDs
+		meatKind := extractKindFromId(data.MeatId.ValueString(), "meat")
+		breadKind := extractKindFromId(data.BreadId.ValueString(), "bread")
+		name := fmt.Sprintf("%s on %s", meatKind, breadKind)
+		data.Name = types.StringValue(name)
+
 		id := fmt.Sprintf("sandwich-%s-%s", data.BreadId.ValueString(), data.MeatId.ValueString())
 		data.Id = types.StringValue(id)
 	} else {
-		// Keep existing ID
+		// Keep existing ID and name
 		data.Id = state.Id
+		data.Name = state.Name
 	}
 
 	// Save updated data into Terraform state
@@ -177,4 +207,26 @@ func (r *SandwichResource) Delete(ctx context.Context, req resource.DeleteReques
 
 func (r *SandwichResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+}
+
+// extractKindFromId extracts the kind from a resource ID
+// IDs are in format "{type}-{kind}-{length}" where kind may contain dashes
+// Example: "bread-rye-3" or "meat-roast-beef-10"
+func extractKindFromId(id, prefix string) string {
+	// Remove the prefix (e.g., "bread-" or "meat-")
+	if !strings.HasPrefix(id, prefix+"-") {
+		return "unknown"
+	}
+	
+	// Remove prefix and get the rest
+	rest := strings.TrimPrefix(id, prefix+"-")
+	
+	// Find the last dash (which separates kind from length)
+	lastDash := strings.LastIndex(rest, "-")
+	if lastDash == -1 {
+		return rest
+	}
+	
+	// Return everything before the last dash (the kind)
+	return rest[:lastDash]
 }

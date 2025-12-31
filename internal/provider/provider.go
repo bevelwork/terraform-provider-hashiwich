@@ -73,6 +73,7 @@ func (p *hwProvider) Resources(ctx context.Context) []func() resource.Resource {
 		NewMeatResource,
 		NewSandwichResource,
 		NewBagResource,
+		NewDrinkResource,
 	}
 }
 
@@ -84,6 +85,7 @@ func (p *hwProvider) DataSources(ctx context.Context) []func() datasource.DataSo
 	return []func() datasource.DataSource{
 		NewDeliMeatsDataSource,
 		NewCondimentsDataSource,
+		NewOrderDataSource,
 	}
 }
 
