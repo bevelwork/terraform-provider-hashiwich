@@ -174,11 +174,13 @@ func (d *OrderDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 		"drink": types.ObjectValueMust(
 			map[string]attr.Type{
 				"kind": types.StringType,
-				"ice": types.ObjectType{
-					AttrTypes: map[string]attr.Type{
-						"some": types.BoolType,
-						"lots": types.BoolType,
-						"max":  types.BoolType,
+				"ice": types.ListType{
+					ElemType: types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							"some": types.BoolType,
+							"lots": types.BoolType,
+							"max":  types.BoolType,
+						},
 					},
 				},
 			},
