@@ -1,10 +1,11 @@
 terraform {
   required_providers {
-    hw = {
-      source  = "hashicorp.com/edu/hashiwich"
-      version = ">= 0.0.1"
+    hashiwich = {
+      source  = "bevelwork/hashiwich"
+      version = "~> 1"
     }
   }
+  required_version = ">= 1"
 }
 
-provider "hw" {}
+provider "hashiwich" {}
