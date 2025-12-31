@@ -1,0 +1,10 @@
+---
+schema: 1.1
+
+partition: tf-ecosystem
+
+summary:
+  owner: bevelwork
+  description: |
+    Terraform provider for Hashiwich
+  visibility: public
