@@ -70,6 +70,9 @@ func (p *hwProvider) Configure(ctx context.Context, req provider.ConfigureReques
 func (p *hwProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewExampleResource,
+		NewBreadResource,
+		NewMeatResource,
+		NewSandwichResource,
 	}
 }
 
