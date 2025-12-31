@@ -2,7 +2,7 @@ terraform {
   required_providers {
     hw = {
       source  = "registry.terraform.io/bevelwork/hashiwich"
-      version = "1.0.6"
+      version = "~> 1.0"
     }
   }
   required_version = ">= 1"
