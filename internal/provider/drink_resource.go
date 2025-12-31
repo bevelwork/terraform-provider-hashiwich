@@ -59,8 +59,17 @@ func (r *DrinkResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 				MarkdownDescription: "The kind of pop/soda",
 				Required:            true,
 			},
-			"ice": schema.ListNestedAttribute{
-				NestedObject: schema.NestedAttributeObject{
+			"id": schema.StringAttribute{
+				Computed:            true,
+				MarkdownDescription: "Drink identifier",
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+			},
+		},
+		Blocks: map[string]schema.Block{
+			"ice": schema.ListNestedBlock{
+				NestedObject: schema.NestedBlockObject{
 					Attributes: map[string]schema.Attribute{
 						"some": schema.BoolAttribute{
 							MarkdownDescription: "Some ice",
@@ -77,14 +86,6 @@ func (r *DrinkResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 					},
 				},
 				MarkdownDescription: "Ice configuration block. Only one of some, lots, or max should be true. Use dynamic blocks to conditionally set values.",
-				Optional:            true,
-			},
-			"id": schema.StringAttribute{
-				Computed:            true,
-				MarkdownDescription: "Drink identifier",
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
 			},
 		},
 	}
