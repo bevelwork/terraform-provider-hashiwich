@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -23,13 +24,14 @@ func NewMeatResource() resource.Resource {
 
 // MeatResource defines the resource implementation.
 type MeatResource struct {
-	client interface{}
+	client any
 }
 
 // MeatResourceModel describes the resource data model.
 type MeatResourceModel struct {
-	Kind types.String `tfsdk:"kind"`
-	Id   types.String `tfsdk:"id"`
+	Description types.String `tfsdk:"description"`
+	Kind        types.String `tfsdk:"kind"`
+	Id          types.String `tfsdk:"id"`
 }
 
 func (r *MeatResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -41,6 +43,10 @@ func (r *MeatResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 		MarkdownDescription: "Mock meat resource for instructional purposes",
 
 		Attributes: map[string]schema.Attribute{
+			"description": schema.StringAttribute{
+				MarkdownDescription: "A description of the meat resource",
+				Optional:            true,
+			},
 			"kind": schema.StringAttribute{
 				MarkdownDescription: "The kind of meat",
 				Required:            true,
@@ -75,11 +81,14 @@ func (r *MeatResource) Create(ctx context.Context, req resource.CreateRequest, r
 		return
 	}
 
+	// Simulate API delay
+	time.Sleep(300 * time.Millisecond)
+
 	// Mock resource creation - generate a fake ID based on the kind
 	id := fmt.Sprintf("meat-%s-%d", data.Kind.ValueString(), len(data.Kind.ValueString()))
 	data.Id = types.StringValue(id)
 
-	tflog.Trace(ctx, "created a meat resource", map[string]interface{}{
+	tflog.Trace(ctx, "created a meat resource", map[string]any{
 		"id":   data.Id.ValueString(),
 		"kind": data.Kind.ValueString(),
 	})
@@ -98,6 +107,9 @@ func (r *MeatResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 		return
 	}
 
+	// Simulate API delay
+	time.Sleep(300 * time.Millisecond)
+
 	// Mock resource read - just return the existing state
 	// In a real implementation, this would fetch from an API
 
@@ -114,6 +126,9 @@ func (r *MeatResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	// Simulate API delay
+	time.Sleep(300 * time.Millisecond)
 
 	// Mock resource update - regenerate ID if kind changed
 	var state MeatResourceModel
@@ -145,8 +160,11 @@ func (r *MeatResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 		return
 	}
 
+	// Simulate API delay
+	time.Sleep(300 * time.Millisecond)
+
 	// Mock resource deletion - nothing to do
-	tflog.Trace(ctx, "deleted a meat resource", map[string]interface{}{
+	tflog.Trace(ctx, "deleted a meat resource", map[string]any{
 		"id": data.Id.ValueString(),
 	})
 }

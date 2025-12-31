@@ -69,35 +69,30 @@ func (p *hwProvider) Configure(ctx context.Context, req provider.ConfigureReques
 
 func (p *hwProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		NewExampleResource,
 		NewBreadResource,
 		NewMeatResource,
 		NewSandwichResource,
+		NewBagResource,
 	}
 }
 
 func (p *hwProvider) EphemeralResources(ctx context.Context) []func() ephemeral.EphemeralResource {
-	return []func() ephemeral.EphemeralResource{
-		NewExampleEphemeralResource,
-	}
+	return []func() ephemeral.EphemeralResource{}
 }
 
 func (p *hwProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
-		NewExampleDataSource,
+		NewDeliMeatsDataSource,
+		NewCondimentsDataSource,
 	}
 }
 
 func (p *hwProvider) Functions(ctx context.Context) []func() function.Function {
-	return []func() function.Function{
-		NewExampleFunction,
-	}
+	return []func() function.Function{}
 }
 
 func (p *hwProvider) Actions(ctx context.Context) []func() action.Action {
-	return []func() action.Action{
-		NewExampleAction,
-	}
+	return []func() action.Action{}
 }
 
 func New(version string) func() provider.Provider {

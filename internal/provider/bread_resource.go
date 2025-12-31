@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -28,8 +29,9 @@ type BreadResource struct {
 
 // BreadResourceModel describes the resource data model.
 type BreadResourceModel struct {
-	Kind types.String `tfsdk:"kind"`
-	Id   types.String `tfsdk:"id"`
+	Description types.String `tfsdk:"description"`
+	Kind        types.String `tfsdk:"kind"`
+	Id          types.String `tfsdk:"id"`
 }
 
 func (r *BreadResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -41,6 +43,10 @@ func (r *BreadResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 		MarkdownDescription: "Mock bread resource for instructional purposes",
 
 		Attributes: map[string]schema.Attribute{
+			"description": schema.StringAttribute{
+				MarkdownDescription: "A description of the bread resource",
+				Optional:            true,
+			},
 			"kind": schema.StringAttribute{
 				MarkdownDescription: "The kind of bread",
 				Required:            true,
@@ -75,6 +81,9 @@ func (r *BreadResource) Create(ctx context.Context, req resource.CreateRequest, 
 		return
 	}
 
+	// Simulate API delay
+	time.Sleep(300 * time.Millisecond)
+
 	// Mock resource creation - generate a fake ID based on the kind
 	id := fmt.Sprintf("bread-%s-%d", data.Kind.ValueString(), len(data.Kind.ValueString()))
 	data.Id = types.StringValue(id)
@@ -98,6 +107,9 @@ func (r *BreadResource) Read(ctx context.Context, req resource.ReadRequest, resp
 		return
 	}
 
+	// Simulate API delay
+	time.Sleep(300 * time.Millisecond)
+
 	// Mock resource read - just return the existing state
 	// In a real implementation, this would fetch from an API
 
@@ -114,6 +126,9 @@ func (r *BreadResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	// Simulate API delay
+	time.Sleep(300 * time.Millisecond)
 
 	// Mock resource update - regenerate ID if kind changed
 	var state BreadResourceModel
@@ -144,6 +159,9 @@ func (r *BreadResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	// Simulate API delay
+	time.Sleep(300 * time.Millisecond)
 
 	// Mock resource deletion - nothing to do
 	tflog.Trace(ctx, "deleted a bread resource", map[string]any{

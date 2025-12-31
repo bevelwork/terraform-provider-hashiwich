@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -23,14 +24,15 @@ func NewSandwichResource() resource.Resource {
 
 // SandwichResource defines the resource implementation.
 type SandwichResource struct {
-	client interface{}
+	client any
 }
 
 // SandwichResourceModel describes the resource data model.
 type SandwichResourceModel struct {
-	BreadId types.String `tfsdk:"bread_id"`
-	MeatId  types.String `tfsdk:"meat_id"`
-	Id      types.String `tfsdk:"id"`
+	Description types.String `tfsdk:"description"`
+	BreadId     types.String `tfsdk:"bread_id"`
+	MeatId      types.String `tfsdk:"meat_id"`
+	Id          types.String `tfsdk:"id"`
 }
 
 func (r *SandwichResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -42,6 +44,10 @@ func (r *SandwichResource) Schema(ctx context.Context, req resource.SchemaReques
 		MarkdownDescription: "Mock sandwich resource for instructional purposes. Combines bread and meat resources.",
 
 		Attributes: map[string]schema.Attribute{
+			"description": schema.StringAttribute{
+				MarkdownDescription: "A description of the sandwich resource",
+				Optional:            true,
+			},
 			"bread_id": schema.StringAttribute{
 				MarkdownDescription: "The ID of the bread resource to use",
 				Required:            true,
@@ -80,11 +86,14 @@ func (r *SandwichResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
+	// Simulate API delay
+	time.Sleep(300 * time.Millisecond)
+
 	// Mock resource creation - generate a fake ID based on bread and meat IDs
 	id := fmt.Sprintf("sandwich-%s-%s", data.BreadId.ValueString(), data.MeatId.ValueString())
 	data.Id = types.StringValue(id)
 
-	tflog.Trace(ctx, "created a sandwich resource", map[string]interface{}{
+	tflog.Trace(ctx, "created a sandwich resource", map[string]any{
 		"id":       data.Id.ValueString(),
 		"bread_id": data.BreadId.ValueString(),
 		"meat_id":  data.MeatId.ValueString(),
@@ -104,6 +113,9 @@ func (r *SandwichResource) Read(ctx context.Context, req resource.ReadRequest, r
 		return
 	}
 
+	// Simulate API delay
+	time.Sleep(300 * time.Millisecond)
+
 	// Mock resource read - just return the existing state
 	// In a real implementation, this would fetch from an API
 
@@ -120,6 +132,9 @@ func (r *SandwichResource) Update(ctx context.Context, req resource.UpdateReques
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	// Simulate API delay
+	time.Sleep(300 * time.Millisecond)
 
 	// Mock resource update - regenerate ID if bread_id or meat_id changed
 	var state SandwichResourceModel
@@ -151,8 +166,11 @@ func (r *SandwichResource) Delete(ctx context.Context, req resource.DeleteReques
 		return
 	}
 
+	// Simulate API delay
+	time.Sleep(300 * time.Millisecond)
+
 	// Mock resource deletion - nothing to do
-	tflog.Trace(ctx, "deleted a sandwich resource", map[string]interface{}{
+	tflog.Trace(ctx, "deleted a sandwich resource", map[string]any{
 		"id": data.Id.ValueString(),
 	})
 }
