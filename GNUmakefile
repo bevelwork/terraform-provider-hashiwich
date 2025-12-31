@@ -1,4 +1,5 @@
-default: fmt lint install generate
+release:
+	goreleaser --clean
 
 build:
 	go build -v ./...
