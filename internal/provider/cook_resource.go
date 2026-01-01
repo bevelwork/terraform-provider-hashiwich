@@ -41,6 +41,53 @@ func (r *CookResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 	resp.Schema = schema.Schema{
 		MarkdownDescription: `The skilled artisan who brings your sandwiches to life. This resource demonstrates how experience levels affect both cost and efficiency, teaching conditional logic and computed attributes based on skill tiers.
 
+**Example Usage:**
+
+` + "```hcl" + `
+# Junior cook
+resource "hw_cook" "junior" {
+  name        = "Alex"
+  experience  = "junior"
+  description = "Junior cook starting out"
+  # cost computed as $120/day
+}
+
+# Experienced cook
+resource "hw_cook" "experienced" {
+  name        = "Sam"
+  experience  = "experienced"
+  description = "Experienced cook"
+  # cost computed as $160/day
+}
+
+# Expert cook
+resource "hw_cook" "expert" {
+  name        = "Jordan"
+  experience  = "expert"
+  description = "Expert chef"
+  # cost computed as $200/day
+}
+
+# Multiple cooks for a store
+resource "hw_cook" "team" {
+  for_each = {
+    cook1 = { name = "Alice", experience = "junior" }
+    cook2 = { name = "Bob", experience = "experienced" }
+    cook3 = { name = "Charlie", experience = "expert" }
+  }
+  
+  name        = each.value.name
+  experience  = each.value.experience
+  description = "${each.value.name} - ${each.value.experience} cook"
+}
+` + "```" + `
+
+**Key Concepts:**
+- Demonstrates **conditional cost calculation** based on experience
+- Required for ` + "`hw_store`" + ` resource (at least one cook)
+- Experience levels: junior ($120/day), experienced ($160/day), expert ($200/day)
+- Cost is automatically computed
+
 *Hands that craft with care,*
 *Experience shapes each sandwich,*
 *Artistry in motion.*`,

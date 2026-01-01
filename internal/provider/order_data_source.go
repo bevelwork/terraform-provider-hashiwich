@@ -37,6 +37,68 @@ func (d *OrderDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 	resp.Schema = schema.Schema{
 		MarkdownDescription: `A comprehensive data source that returns a complete order example with nested object structures. Demonstrates complex data source outputs with nested attributes, perfect for learning how to work with structured data in Terraform.
 
+**Example Usage:**
+
+` + "```hcl" + `
+# Get example order data
+data "hw_order" "example" {}
+
+# Access nested sandwich attributes
+output "sandwich_info" {
+  value = {
+    bread = data.hw_order.example.sandwich.bread
+    meat  = data.hw_order.example.sandwich.meat
+    name  = data.hw_order.example.sandwich.name
+  }
+}
+
+# Access nested drink attributes
+output "drink_info" {
+  value = {
+    kind = data.hw_order.example.drink.kind
+    ice  = data.hw_order.example.drink.ice
+  }
+}
+
+# Use order data to create resources
+resource "hw_bread" "from_order" {
+  kind = data.hw_order.example.sandwich.bread
+}
+
+resource "hw_meat" "from_order" {
+  kind = data.hw_order.example.sandwich.meat
+}
+
+resource "hw_sandwich" "from_order" {
+  bread_id = hw_bread.from_order.id
+  meat_id  = hw_meat.from_order.id
+  description = "Sandwich from order data: ${data.hw_order.example.sandwich.name}"
+}
+
+# Access nested list (ice configuration)
+output "ice_config" {
+  value = [
+    for ice in data.hw_order.example.drink.ice : {
+      some = ice.some
+      lots = ice.lots
+      max  = ice.max
+    }
+  ]
+}
+
+# Check ice preferences
+locals {
+  has_ice = length(data.hw_order.example.drink.ice) > 0
+  max_ice = try(data.hw_order.example.drink.ice[0].max, false)
+}
+` + "```" + `
+
+**Key Concepts:**
+- Demonstrates **nested object attributes** (sandwich, drink)
+- Shows **nested list attributes** (ice configuration)
+- Access nested data with dot notation: ` + "`data.hw_order.example.sandwich.bread`" + `
+- Perfect for learning complex data structures
+
 *Order complete now,*
 *Sandwich and drink together,*
 *Meal is ready soon.*`,

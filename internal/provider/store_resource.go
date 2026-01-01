@@ -47,6 +47,74 @@ func (r *StoreResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 	resp.Schema = schema.Schema{
 		MarkdownDescription: `The complete sandwich shop resource that brings together all components into a functioning business. Demonstrates complex resource dependencies, list attributes, and computed values that aggregate costs and calculate capacity from multiple child resources.
 
+**Example Usage:**
+
+` + "```hcl" + `
+# First, create all required components
+resource "hw_oven" "main" {
+  type        = "commercial"
+  description = "Main kitchen oven"
+}
+
+resource "hw_cook" "chef1" {
+  name        = "Alice"
+  experience  = "expert"
+  description = "Head chef"
+}
+
+resource "hw_cook" "chef2" {
+  name        = "Bob"
+  experience  = "experienced"
+  description = "Sous chef"
+}
+
+resource "hw_tables" "dining" {
+  quantity    = 10
+  size        = "medium"
+  description = "Dining room tables"
+}
+
+resource "hw_chairs" "seating" {
+  quantity    = 40
+  style       = "comfortable"
+  description = "Dining room chairs"
+}
+
+resource "hw_fridge" "storage" {
+  size        = "large"
+  description = "Main storage fridge"
+}
+
+# Create the complete store
+resource "hw_store" "main" {
+  name        = "Downtown Deli"
+  oven_id     = hw_oven.main.id
+  cook_ids    = [hw_cook.chef1.id, hw_cook.chef2.id]
+  tables_id   = hw_tables.dining.id
+  chairs_id   = hw_chairs.seating.id
+  fridge_id   = hw_fridge.storage.id
+  description = "Main downtown location"
+  
+  # cost and customers_per_hour are automatically computed
+}
+
+# Output the store details
+output "store_info" {
+  value = {
+    name              = hw_store.main.name
+    total_cost        = hw_store.main.cost
+    customers_per_hour = hw_store.main.customers_per_hour
+  }
+}
+` + "```" + `
+
+**Key Concepts:**
+- Demonstrates **complex resource dependencies**
+- Requires: oven, at least one cook, tables, chairs, and fridge
+- Shows **list attributes** (cook_ids can have multiple cooks)
+- Computes total cost from all components
+- Calculates customers_per_hour based on capacity
+
 *All pieces unite,*
 *Kitchen, staff, and seating,*
 *Shop comes to life.*`,

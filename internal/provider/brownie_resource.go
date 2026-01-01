@@ -43,6 +43,46 @@ func (r *BrownieResource) Schema(ctx context.Context, req resource.SchemaRequest
 	resp.Schema = schema.Schema{
 		MarkdownDescription: `A rich, fudgy dessert resource that demonstrates the sweeter side of Terraform. Learn resource management while satisfying your chocolate cravings.
 
+**Example Usage:**
+
+` + "```hcl" + `
+# Fudge brownie
+resource "hw_brownie" "fudge" {
+  kind        = "fudge"
+  description = "Rich fudge brownie"
+}
+
+# Walnut brownie
+resource "hw_brownie" "walnut" {
+  kind        = "walnut"
+  description = "Fudgy brownie with walnuts"
+}
+
+# Using map for brownie configuration
+variable "brownie_menu" {
+  type = map(string)
+  default = {
+    fudge           = "Classic fudge brownie"
+    walnut          = "Brownie with walnuts"
+    blondie         = "Vanilla blondie"
+    double_chocolate = "Double chocolate brownie"
+  }
+}
+
+resource "hw_brownie" "menu" {
+  for_each = var.brownie_menu
+  
+  kind        = each.key
+  description = each.value
+}
+` + "```" + `
+
+**Key Concepts:**
+- Demonstrates **string attribute** for brownie kind
+- Shows **computed price** (always $2.00)
+- Simple resource structure
+- Common kinds: fudge, walnut, blondie, double chocolate
+
 *Dense and chocolatey,*
 *Fudgy squares of pure bliss,*
 *Dessert perfection.*`,

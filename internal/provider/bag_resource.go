@@ -41,6 +41,57 @@ func (r *BagResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 	resp.Schema = schema.Schema{
 		MarkdownDescription: `A versatile container resource that holds multiple sandwiches, perfect for takeout orders or meal prep. The bag resource demonstrates list attributes and resource references, allowing you to group sandwiches together for convenient management and organization.
 
+**Example Usage:**
+
+` + "```hcl" + `
+# Create bread and meat resources first
+resource "hw_bread" "rye" {
+  kind = "rye"
+}
+
+resource "hw_meat" "turkey" {
+  kind = "turkey"
+}
+
+resource "hw_meat" "ham" {
+  kind = "ham"
+}
+
+# Create sandwiches
+resource "hw_sandwich" "turkey_sandwich" {
+  bread_id = hw_bread.rye.id
+  meat_id   = hw_meat.turkey.id
+}
+
+resource "hw_sandwich" "ham_sandwich" {
+  bread_id = hw_bread.rye.id
+  meat_id  = hw_meat.ham.id
+}
+
+# Create a bag containing multiple sandwiches
+resource "hw_bag" "lunch_bag" {
+  description = "Lunch bag with multiple sandwiches"
+  sandwiches  = [
+    hw_sandwich.turkey_sandwich.id,
+    hw_sandwich.ham_sandwich.id
+  ]
+}
+
+# Using for_each to create multiple bags
+resource "hw_bag" "party_bags" {
+  for_each = toset(["bag1", "bag2", "bag3"])
+  
+  description = "Party bag ${each.key}"
+  sandwiches  = [hw_sandwich.turkey_sandwich.id]
+}
+` + "```" + `
+
+**Key Concepts:**
+- Demonstrates **list attributes** with resource references
+- Shows how to group related resources together
+- Useful for managing collections of items
+- The ` + "`sandwiches`" + ` attribute accepts a list of sandwich resource IDs
+
 *Brown paper rustles soft,*
 *Sandwiches nestle inside,*
 *Lunch is ready now.*`,

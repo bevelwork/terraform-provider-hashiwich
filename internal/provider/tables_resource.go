@@ -43,6 +43,61 @@ func (r *TablesResource) Schema(ctx context.Context, req resource.SchemaRequest,
 	resp.Schema = schema.Schema{
 		MarkdownDescription: `The foundation of dining space, where customers gather to enjoy their meals. Demonstrates quantity-based resources, size variations, and capacity calculations that scale with your restaurant's needs.
 
+**Example Usage:**
+
+` + "```hcl" + `
+# Small tables (2 seats each)
+resource "hw_tables" "small" {
+  quantity    = 10
+  size        = "small"
+  description = "Small tables for intimate dining"
+  # cost computed as $500 (10 × $50)
+  # capacity computed as 20 (10 × 2 seats)
+}
+
+# Medium tables (4 seats each)
+resource "hw_tables" "medium" {
+  quantity    = 8
+  size        = "medium"
+  description = "Medium tables for groups"
+  # cost computed as $800 (8 × $100)
+  # capacity computed as 32 (8 × 4 seats)
+}
+
+# Large tables (6 seats each)
+resource "hw_tables" "large" {
+  quantity    = 5
+  size        = "large"
+  description = "Large tables for big parties"
+  # cost computed as $750 (5 × $150)
+  # capacity computed as 30 (5 × 6 seats)
+}
+
+# Using variables
+variable "table_config" {
+  type = object({
+    quantity = number
+    size     = string
+  })
+  default = {
+    quantity = 12
+    size     = "medium"
+  }
+}
+
+resource "hw_tables" "variable" {
+  quantity    = var.table_config.quantity
+  size        = var.table_config.size
+  description = "Tables from variable configuration"
+}
+` + "```" + `
+
+**Key Concepts:**
+- Demonstrates **quantity and size-based calculations**
+- Required for ` + "`hw_store`" + ` resource
+- Sizes: small (2 seats, $50/table), medium (4 seats, $100/table), large (6 seats, $150/table)
+- Cost and capacity are automatically computed
+
 *Wooden surfaces wait,*
 *Ready for plates and laughter,*
 *Gathering place set.*`,

@@ -42,6 +42,58 @@ func (r *ChairsResource) Schema(ctx context.Context, req resource.SchemaRequest,
 	resp.Schema = schema.Schema{
 		MarkdownDescription: `Comfortable seating that complements your tables, demonstrating style-based pricing and quantity management. Learn how different resource attributes affect cost while ensuring your customers have a pleasant dining experience.
 
+**Example Usage:**
+
+` + "```hcl" + `
+# Basic chairs
+resource "hw_chairs" "basic" {
+  quantity    = 20
+  style       = "basic"
+  description = "Basic chairs for budget setup"
+  # cost computed as $400 (20 × $20)
+}
+
+# Comfortable chairs
+resource "hw_chairs" "comfortable" {
+  quantity    = 30
+  style       = "comfortable"
+  description = "Comfortable chairs for better experience"
+  # cost computed as $1050 (30 × $35)
+}
+
+# Premium chairs
+resource "hw_chairs" "premium" {
+  quantity    = 25
+  style       = "premium"
+  description = "Premium chairs for upscale dining"
+  # cost computed as $1250 (25 × $50)
+}
+
+# Using variables
+variable "chair_config" {
+  type = object({
+    quantity = number
+    style    = string
+  })
+  default = {
+    quantity = 40
+    style    = "comfortable"
+  }
+}
+
+resource "hw_chairs" "variable" {
+  quantity    = var.chair_config.quantity
+  style       = var.chair_config.style
+  description = "Chairs from variable configuration"
+}
+` + "```" + `
+
+**Key Concepts:**
+- Demonstrates **style-based pricing** with quantity
+- Required for ` + "`hw_store`" + ` resource
+- Styles: basic ($20/chair), comfortable ($35/chair), premium ($50/chair)
+- Cost is automatically computed
+
 *Seats await guests,*
 *Comfort in every style,*
 *Rest for weary feet.*`,

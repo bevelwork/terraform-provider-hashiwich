@@ -44,6 +44,49 @@ func (r *DogtreatResource) Schema(ctx context.Context, req resource.SchemaReques
 	resp.Schema = schema.Schema{
 		MarkdownDescription: `A special resource that rewards good behavior! Demonstrates conditional logic and computed attributes based on boolean values. The size of the treat depends entirely on whether the dog has been good.
 
+**Example Usage:**
+
+` + "```hcl" + `
+# Good dog gets large treat
+resource "hw_dogtreat" "good_dog" {
+  is_good_dog = true
+  description = "Treat for a very good dog"
+  # size will be computed as "large"
+  # price will be computed as $2.00
+}
+
+# Not-so-good dog gets small treat
+resource "hw_dogtreat" "needs_work" {
+  is_good_dog = false
+  description = "Small treat for training"
+  # size will be computed as "small"
+  # price will be computed as $1.00
+}
+
+# Using variables for conditional logic
+variable "dog_behavior" {
+  type = map(bool)
+  default = {
+    max    = true
+    buddy  = true
+    rover  = false
+  }
+}
+
+resource "hw_dogtreat" "pack" {
+  for_each = var.dog_behavior
+  
+  is_good_dog = each.value
+  description = "Treat for ${each.key} (${each.value ? "good" : "needs work"})"
+}
+` + "```" + `
+
+**Key Concepts:**
+- Demonstrates **boolean attributes** and conditional logic
+- Shows **computed attributes** based on boolean values
+- If ` + "`is_good_dog = true`" + `: size = "large", price = $2.00
+- If ` + "`is_good_dog = false`" + `: size = "small", price = $1.00
+
 *Wagging tail awaits,*
 *Good dogs get the bigger treat,*
 *Joy in every bite.*`,

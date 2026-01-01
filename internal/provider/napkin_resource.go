@@ -43,6 +43,45 @@ func (r *NapkinResource) Schema(ctx context.Context, req resource.SchemaRequest,
 	resp.Schema = schema.Schema{
 		MarkdownDescription: `A humble but essential resource that demonstrates numeric attributes and simple computations. Sometimes the smallest resources teach the biggest lessons about Terraform fundamentals.
 
+**Example Usage:**
+
+` + "```hcl" + `
+# Single napkin order
+resource "hw_napkin" "small_order" {
+  quantity    = 10
+  description = "Small napkin order"
+}
+
+# Bulk napkin order
+resource "hw_napkin" "bulk_order" {
+  quantity    = 100
+  description = "Bulk napkin order for restaurant"
+}
+
+# Using variables for quantity
+variable "napkin_quantity" {
+  type    = number
+  default = 50
+}
+
+resource "hw_napkin" "variable_order" {
+  quantity    = var.napkin_quantity
+  description = "Napkin order from variable"
+}
+
+# Calculate total cost in output
+output "napkin_total_cost" {
+  value = hw_napkin.bulk_order.price
+  description = "Total cost for bulk napkin order"
+}
+` + "```" + `
+
+**Key Concepts:**
+- Demonstrates **numeric attributes** (quantity)
+- Shows **computed pricing** ($0.25 per napkin)
+- Simple resource perfect for learning basics
+- Price = quantity × $0.25
+
 *Soft paper squares,*
 *Ready for messy hands,*
 *Simple necessity.*`,

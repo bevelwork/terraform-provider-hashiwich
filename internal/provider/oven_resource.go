@@ -40,6 +40,48 @@ func (r *OvenResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 	resp.Schema = schema.Schema{
 		MarkdownDescription: `The heart of the kitchen, this oven resource is essential for any sandwich shop operation. Demonstrates resource dependencies and cost calculations based on equipment type, showing how infrastructure components work together.
 
+**Example Usage:**
+
+` + "```hcl" + `
+# Standard oven
+resource "hw_oven" "standard" {
+  type        = "standard"
+  description = "Standard commercial oven"
+  # cost computed as $500
+}
+
+# Commercial oven
+resource "hw_oven" "commercial" {
+  type        = "commercial"
+  description = "High-capacity commercial oven"
+  # cost computed as $1200
+}
+
+# High-capacity oven
+resource "hw_oven" "high_capacity" {
+  type        = "high-capacity"
+  description = "Maximum capacity industrial oven"
+  # cost computed as $2000
+}
+
+# Using variables
+variable "oven_type" {
+  type    = string
+  default = "commercial"
+}
+
+resource "hw_oven" "variable" {
+  type        = var.oven_type
+  description = "Oven configured from variable"
+}
+` + "```" + `
+
+**Key Concepts:**
+- Demonstrates **cost calculation** based on type
+- Required for ` + "`hw_store`" + ` resource
+- Types: standard ($500), commercial ($1200), high-capacity ($2000)
+- Cost is automatically computed
+
 *Heat radiates warm,*
 *Baking bread to golden brown,*
 *Kitchen's steady heart.*`,

@@ -44,6 +44,48 @@ func (r *CrackerResource) Schema(ctx context.Context, req resource.SchemaRequest
 	resp.Schema = schema.Schema{
 		MarkdownDescription: `A crunchy companion resource perfect for soups and spreads. Demonstrates how simple resources with quantity-based pricing can be managed efficiently in Terraform configurations.
 
+**Example Usage:**
+
+` + "```hcl" + `
+# Saltine crackers
+resource "hw_cracker" "saltines" {
+  kind     = "saltine"
+  quantity = 5
+  description = "Classic saltine crackers"
+}
+
+# Graham crackers
+resource "hw_cracker" "graham" {
+  kind     = "graham"
+  quantity = 3
+  description = "Graham crackers for s'mores"
+}
+
+# Using for_each to create multiple cracker types
+variable "cracker_orders" {
+  type = map(number)
+  default = {
+    saltine = 10
+    oyster  = 5
+    graham  = 8
+  }
+}
+
+resource "hw_cracker" "menu" {
+  for_each = var.cracker_orders
+  
+  kind     = each.key
+  quantity = each.value
+  description = "${each.value} packs of ${each.key} crackers"
+}
+` + "```" + `
+
+**Key Concepts:**
+- Demonstrates **string and number attributes** together
+- Shows **quantity-based pricing** ($0.50 per pack)
+- Useful for learning resource attributes
+- Price = quantity × $0.50
+
 *Golden and crisp,*
 *Snapping with each bite,*
 *The perfect crunch.*`,

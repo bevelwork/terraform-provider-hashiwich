@@ -44,6 +44,60 @@ func (r *SoupResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 	resp.Schema = schema.Schema{
 		MarkdownDescription: `A comforting bowl of warmth that demonstrates string attributes and computed values. Perfect for learning Terraform basics while imagining a cozy meal on a chilly day.
 
+**Example Usage:**
+
+` + "```hcl" + `
+# Hot soup example
+resource "hw_soup" "tomato_soup" {
+  kind        = "tomato"
+  temperature = "hot"
+  description = "Classic tomato soup"
+}
+
+# Cold soup example
+resource "hw_soup" "gazpacho" {
+  kind        = "gazpacho"
+  temperature = "cold"
+  description = "Chilled Spanish gazpacho"
+}
+
+# Using for_each to create multiple soups
+variable "soup_menu" {
+  type = map(object({
+    kind        = string
+    temperature = string
+  }))
+  default = {
+    chicken_noodle = {
+      kind        = "chicken noodle"
+      temperature = "hot"
+    }
+    vegetable = {
+      kind        = "vegetable"
+      temperature = "hot"
+    }
+    vichyssoise = {
+      kind        = "vichyssoise"
+      temperature = "cold"
+    }
+  }
+}
+
+resource "hw_soup" "menu" {
+  for_each = var.soup_menu
+  
+  kind        = each.value.kind
+  temperature = each.value.temperature
+  description = "${each.value.kind} soup (${each.value.temperature})"
+}
+` + "```" + `
+
+**Key Concepts:**
+- Demonstrates **string attributes** for kind and temperature
+- Shows **computed price** attribute (always $2.50)
+- Useful for learning basic resource structure
+- Temperature must be "hot" or "cold"
+
 *Steam rises gently,*
 *Bowl of warmth in cold hands,*
 *Comfort in each spoon.*`,

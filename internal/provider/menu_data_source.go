@@ -37,6 +37,78 @@ func (d *MenuDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 	resp.Schema = schema.Schema{
 		MarkdownDescription: `A comprehensive menu data source that provides base pricing information for all menu items. Essential for understanding pricing structures and learning how data sources can aggregate information across multiple resource types.
 
+**Example Usage:**
+
+` + "```hcl" + `
+# Get menu pricing information
+data "hw_menu" "pricing" {}
+
+# Access individual prices
+output "menu_prices" {
+  value = {
+    sandwich_price    = data.hw_menu.pricing.prices.sandwich
+    drink_price       = data.hw_menu.pricing.prices.drink
+    soup_price        = data.hw_menu.pricing.prices.soup
+    salad_price       = data.hw_menu.pricing.prices.salad
+    cookie_price      = data.hw_menu.pricing.prices.cookie
+    brownie_price     = data.hw_menu.pricing.prices.brownie
+    stroopwafel_price = data.hw_menu.pricing.prices.stroopwafel
+  }
+}
+
+# Calculate total order cost
+locals {
+  menu = data.hw_menu.pricing.prices
+  
+  # Example order: 2 sandwiches, 2 drinks, 1 soup
+  order_total = (
+    local.menu.sandwich * 2 +
+    local.menu.drink * 2 +
+    local.menu.soup * 1
+  )
+}
+
+output "order_total" {
+  value     = local.order_total
+  description = "Total cost of example order (before upcharge)"
+}
+
+# Use prices in resource descriptions
+resource "hw_sandwich" "priced" {
+  bread_id = hw_bread.rye.id
+  meat_id  = hw_meat.turkey.id
+  description = "Turkey sandwich - Base price: $${data.hw_menu.pricing.prices.sandwich}"
+}
+
+# Compare prices
+output "price_comparison" {
+  value = {
+    cheapest_dessert = min(
+      data.hw_menu.pricing.prices.cookie,
+      data.hw_menu.pricing.prices.brownie,
+      data.hw_menu.pricing.prices.stroopwafel
+    )
+    most_expensive_item = max(
+      data.hw_menu.pricing.prices.sandwich,
+      data.hw_menu.pricing.prices.drink,
+      data.hw_menu.pricing.prices.soup,
+      data.hw_menu.pricing.prices.salad
+    )
+  }
+}
+
+# Access all prices as a map
+output "all_prices" {
+  value = data.hw_menu.pricing.prices
+}
+` + "```" + `
+
+**Key Concepts:**
+- Demonstrates **nested object attributes** for pricing
+- Provides base prices for all menu items (before upcharge)
+- Access prices with: ` + "`data.hw_menu.pricing.prices.sandwich`" + `
+- Useful for calculations and cost analysis
+
 *Prices listed clear,*
 *Menu of possibilities,*
 *Choices made easy.*`,

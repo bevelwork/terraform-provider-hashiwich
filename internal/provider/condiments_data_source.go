@@ -36,6 +36,51 @@ func (d *CondimentsDataSource) Schema(ctx context.Context, req datasource.Schema
 	resp.Schema = schema.Schema{
 		MarkdownDescription: `A flavorful data source that returns a comprehensive list of available condiments. Perfect for learning how data sources work and how to query read-only information that enhances your sandwich configurations.
 
+**Example Usage:**
+
+` + "```hcl" + `
+# Get all available condiments
+data "hw_condiments" "all" {}
+
+# Use the condiments in outputs
+output "available_condiments" {
+  value = data.hw_condiments.all.condiments
+}
+
+# Use condiments to create resources or make decisions
+locals {
+  condiment_list = data.hw_condiments.all.condiments
+  has_mayo       = contains(local.condiment_list, "mayonnaise")
+  has_mustard    = contains(local.condiment_list, "mustard")
+}
+
+# Example: Use in conditional logic
+resource "hw_sandwich" "with_condiments" {
+  count = local.has_mayo ? 1 : 0
+  
+  bread_id = hw_bread.rye.id
+  meat_id  = hw_meat.turkey.id
+  description = "Turkey sandwich with available condiments"
+}
+
+# Example: Iterate over condiments
+output "condiment_count" {
+  value = length(data.hw_condiments.all.condiments)
+}
+
+output "condiment_list" {
+  value = [
+    for condiment in data.hw_condiments.all.condiments : upper(condiment)
+  ]
+}
+` + "```" + `
+
+**Key Concepts:**
+- Demonstrates **read-only data sources**
+- Returns a list of available condiment strings
+- No input parameters required
+- Use ` + "`data.hw_condiments.all.condiments`" + ` to access the list
+
 *Sauces and spreads wait,*
 *Flavor enhancers ready,*
 *Taste in every drop.*`,

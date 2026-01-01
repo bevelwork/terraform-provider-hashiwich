@@ -43,6 +43,39 @@ func (r *SilverwareResource) Schema(ctx context.Context, req resource.SchemaRequ
 	resp.Schema = schema.Schema{
 		MarkdownDescription: `Essential dining tools bundled together, demonstrating quantity-based resources and bulk pricing. Learn to manage sets and packs while setting the table for your Terraform journey.
 
+**Example Usage:**
+
+` + "```hcl" + `
+# Small silverware order
+resource "hw_silverware" "small_order" {
+  quantity    = 10
+  description = "Silverware for small event"
+}
+
+# Large restaurant order
+resource "hw_silverware" "restaurant" {
+  quantity    = 100
+  description = "Bulk silverware for restaurant"
+}
+
+# Using variables
+variable "silverware_packs" {
+  type    = number
+  default = 50
+}
+
+resource "hw_silverware" "variable_order" {
+  quantity    = var.silverware_packs
+  description = "Silverware order from variable"
+}
+` + "```" + `
+
+**Key Concepts:**
+- Demonstrates **quantity-based resources**
+- Shows **computed pricing** ($1.00 per pack)
+- Simple numeric attribute example
+- Price = quantity × $1.00
+
 *Fork, knife, and spoon,*
 *Shining in the light,*
 *Tools for every meal.*`,
