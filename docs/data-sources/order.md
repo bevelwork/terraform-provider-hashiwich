@@ -17,27 +17,20 @@ Mock data source that returns an order with sandwich and drink specifications fo
 
 ### Read-Only
 
+- `drink` (Attributes) Drink specifications (see [below for nested schema](#nestedatt--drink))
 - `id` (String) Data source identifier
-- `order` (Attributes) Order containing sandwich and drink specifications (see [below for nested schema](#nestedatt--order))
+- `sandwich` (Attributes) Sandwich specifications (see [below for nested schema](#nestedatt--sandwich))
 
-<a id="nestedatt--order"></a>
-### Nested Schema for `order`
-
-Read-Only:
-
-- `drink` (Attributes) Drink specifications (see [below for nested schema](#nestedatt--order--drink))
-- `sandwich` (Attributes) Sandwich specifications (see [below for nested schema](#nestedatt--order--sandwich))
-
-<a id="nestedatt--order--drink"></a>
-### Nested Schema for `order.drink`
+<a id="nestedatt--drink"></a>
+### Nested Schema for `drink`
 
 Read-Only:
 
-- `ice` (Attributes List) Ice configuration (see [below for nested schema](#nestedatt--order--drink--ice))
+- `ice` (Attributes List) Ice configuration (see [below for nested schema](#nestedatt--drink--ice))
 - `kind` (String) The drink kind
 
-<a id="nestedatt--order--drink--ice"></a>
-### Nested Schema for `order.drink.ice`
+<a id="nestedatt--drink--ice"></a>
+### Nested Schema for `drink.ice`
 
 Read-Only:
 
@@ -47,8 +40,8 @@ Read-Only:
 
 
 
-<a id="nestedatt--order--sandwich"></a>
-### Nested Schema for `order.sandwich`
+<a id="nestedatt--sandwich"></a>
+### Nested Schema for `sandwich`
 
 Read-Only:
 

@@ -17,3 +17,4 @@ description: |-
 ### Optional
 
 - `endpoint` (String) Example provider attribute
+- `upcharge` (Number) Flat dollar amount to add to all resource prices (e.g., 0.50 adds $0.50 to each item, 1.00 adds $1.00)

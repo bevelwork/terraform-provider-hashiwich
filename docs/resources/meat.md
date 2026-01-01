@@ -3,12 +3,64 @@
 page_title: "hw_meat Resource - hw"
 subcategory: ""
 description: |-
-  Mock meat resource for instructional purposes
+  The hw_meat resource represents a type of deli meat available in the sandwich shop.
+  This resource is used to create meat instances that can then be referenced by other resources like hw_sandwich. Each meat resource has a unique identifier (ID) that is automatically generated based on the meat kind.
+  Example Usage:
+  
+  resource "hw_meat" "turkey" {
+    kind        = "turkey"
+    description = "Premium sliced turkey"
+  }
+  
+  resource "hw_meat" "ham" {
+    kind        = "ham"
+    description = "Honey-glazed ham"
+  }
+  
+  resource "hw_meat" "roast_beef" {
+    kind        = "roast beef"
+    description = "Slow-roasted beef"
+  }
+  
+  Common Meat Types:
+  turkey - Sliced turkey breastham - Deli hamroast beef - Roast beefchicken - Grilled chickenpastrami - Spiced pastramisalami - Italian salami
+  Note: The kind attribute accepts any string value, including multi-word names (e.g., "roast beef"). The resource ID is automatically computed and cannot be set manually.
 ---
 
 # hw_meat (Resource)
 
-Mock meat resource for instructional purposes
+The `hw_meat` resource represents a type of deli meat available in the sandwich shop.
+
+This resource is used to create meat instances that can then be referenced by other resources like `hw_sandwich`. Each meat resource has a unique identifier (ID) that is automatically generated based on the meat kind.
+
+**Example Usage:**
+
+```hcl
+resource "hw_meat" "turkey" {
+  kind        = "turkey"
+  description = "Premium sliced turkey"
+}
+
+resource "hw_meat" "ham" {
+  kind        = "ham"
+  description = "Honey-glazed ham"
+}
+
+resource "hw_meat" "roast_beef" {
+  kind        = "roast beef"
+  description = "Slow-roasted beef"
+}
+```
+
+**Common Meat Types:**
+- `turkey` - Sliced turkey breast
+- `ham` - Deli ham
+- `roast beef` - Roast beef
+- `chicken` - Grilled chicken
+- `pastrami` - Spiced pastrami
+- `salami` - Italian salami
+
+**Note:** The `kind` attribute accepts any string value, including multi-word names (e.g., "roast beef"). The resource ID is automatically computed and cannot be set manually.
 
 
 
@@ -17,12 +69,58 @@ Mock meat resource for instructional purposes
 
 ### Required
 
-- `kind` (String) The kind of meat
+- `kind` (String) The type or variety of deli meat. This is a required field that identifies what kind of meat this resource represents.
+
+**Type:** `string` (required)
+
+**Examples:**
+```hcl
+kind = "turkey"
+kind = "ham"
+kind = "roast beef"  # Multi-word values are supported
+```
+
+**Common Values:**
+- `turkey`, `ham`, `roast beef`, `chicken`, `pastrami`, `salami`
+
+**Important Notes:**
+- This value is used to generate the resource ID
+- Changing this value will cause the resource to be recreated (new ID generated)
+- The value is case-sensitive
+- Multi-word values (e.g., "roast beef") are supported
+- Any string value is accepted, but using standard meat types improves readability
 
 ### Optional
 
-- `description` (String) A description of the meat resource
+- `description` (String) Optional human-readable description of the meat resource.
+
+This field is useful for documentation and can help identify the characteristics or quality of the meat in your configuration.
+
+**Example:**
+```hcl
+description = "Premium organic turkey, sliced thin"
+```
+
+**Best Practices:**
+- Use descriptive text that helps understand the meat's characteristics
+- Can be used in outputs or documentation
+- Does not affect resource behavior or ID generation
 
 ### Read-Only
 
-- `id` (String) Meat identifier
+- `id` (String) Automatically generated unique identifier for this meat resource.
+
+**Type:** `string` (computed, read-only)
+
+**Format:** `meat-{kind}-{length}`
+
+**Example Values:**
+- `meat-turkey-6` (for kind = "turkey")
+- `meat-roast-beef-10` (for kind = "roast beef")
+
+**Important Notes:**
+- This value is automatically computed and cannot be set manually
+- The ID is stable and will not change unless the `kind` attribute changes
+- Use this ID to reference the meat in other resources (e.g., `hw_sandwich.meat_id`)
+- The ID format includes the meat kind and the length of the kind string
+- Multi-word kinds will have spaces converted to dashes in the ID

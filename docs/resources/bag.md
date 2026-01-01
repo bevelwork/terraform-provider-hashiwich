@@ -17,7 +17,7 @@ Mock bag resource for instructional purposes. Can contain multiple sandwiches.
 
 ### Required
 
-- `sandwich_ids` (List of String) List of sandwich resource IDs to include in the bag
+- `sandwiches` (List of String) List of sandwich resource IDs to include in the bag
 
 ### Optional
 
