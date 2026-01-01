@@ -3,12 +3,19 @@
 page_title: "hw_order Data Source - hw"
 subcategory: ""
 description: |-
-  Mock data source that returns an order with sandwich and drink specifications for instructional purposes
+  A comprehensive data source that returns a complete order example with nested object structures. Demonstrates complex data source outputs with nested attributes, perfect for learning how to work with structured data in Terraform.
+  Order complete now,
+  Sandwich and drink together,
+  Meal is ready soon.
 ---
 
 # hw_order (Data Source)
 
-Mock data source that returns an order with sandwich and drink specifications for instructional purposes
+A comprehensive data source that returns a complete order example with nested object structures. Demonstrates complex data source outputs with nested attributes, perfect for learning how to work with structured data in Terraform.
+
+*Order complete now,*
+*Sandwich and drink together,*
+*Meal is ready soon.*
 
 
 

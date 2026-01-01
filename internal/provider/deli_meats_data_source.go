@@ -34,7 +34,11 @@ func (d *DeliMeatsDataSource) Metadata(ctx context.Context, req datasource.Metad
 
 func (d *DeliMeatsDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Mock data source that returns a list of deli meats for instructional purposes",
+		MarkdownDescription: `A savory data source that provides a complete catalog of available deli meats. Learn how to query data sources to discover available options before creating your meat resources.
+
+*Sliced thin and ready,*
+*Meats arrayed in perfect rows,*
+*Choices abound here.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"meats": schema.ListAttribute{

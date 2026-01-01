@@ -3,12 +3,19 @@
 page_title: "hw_silverware Resource - hw"
 subcategory: ""
 description: |-
-  Mock silverware pack resource for instructional purposes
+  Essential dining tools bundled together, demonstrating quantity-based resources and bulk pricing. Learn to manage sets and packs while setting the table for your Terraform journey.
+  Fork, knife, and spoon,
+  Shining in the light,
+  Tools for every meal.
 ---
 
 # hw_silverware (Resource)
 
-Mock silverware pack resource for instructional purposes
+Essential dining tools bundled together, demonstrating quantity-based resources and bulk pricing. Learn to manage sets and packs while setting the table for your Terraform journey.
+
+*Fork, knife, and spoon,*
+*Shining in the light,*
+*Tools for every meal.*
 
 
 

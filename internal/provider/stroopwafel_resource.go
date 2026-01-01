@@ -41,7 +41,11 @@ func (r *StroopwafelResource) Metadata(ctx context.Context, req resource.Metadat
 
 func (r *StroopwafelResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Mock stroopwafel resource for instructional purposes",
+		MarkdownDescription: `A delightful Dutch treat resource featuring caramel-filled waffle cookies. Learn Terraform while exploring international flavors and the art of the perfect stroopwafel.
+
+*Caramel between layers,*
+*Dutch delight in each bite,*
+*Waffle cookie joy.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"description": schema.StringAttribute{

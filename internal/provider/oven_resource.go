@@ -38,7 +38,11 @@ func (r *OvenResource) Metadata(ctx context.Context, req resource.MetadataReques
 
 func (r *OvenResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Oven resource for sandwich shop. Required for hw_store.",
+		MarkdownDescription: `The heart of the kitchen, this oven resource is essential for any sandwich shop operation. Demonstrates resource dependencies and cost calculations based on equipment type, showing how infrastructure components work together.
+
+*Heat radiates warm,*
+*Baking bread to golden brown,*
+*Kitchen's steady heart.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"type": schema.StringAttribute{

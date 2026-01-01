@@ -35,7 +35,11 @@ func (d *OrderDataSource) Metadata(ctx context.Context, req datasource.MetadataR
 
 func (d *OrderDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Mock data source that returns an order with sandwich and drink specifications for instructional purposes",
+		MarkdownDescription: `A comprehensive data source that returns a complete order example with nested object structures. Demonstrates complex data source outputs with nested attributes, perfect for learning how to work with structured data in Terraform.
+
+*Order complete now,*
+*Sandwich and drink together,*
+*Meal is ready soon.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"sandwich": schema.SingleNestedAttribute{

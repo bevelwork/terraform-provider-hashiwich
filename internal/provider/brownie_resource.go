@@ -41,7 +41,11 @@ func (r *BrownieResource) Metadata(ctx context.Context, req resource.MetadataReq
 
 func (r *BrownieResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Mock brownie resource for instructional purposes",
+		MarkdownDescription: `A rich, fudgy dessert resource that demonstrates the sweeter side of Terraform. Learn resource management while satisfying your chocolate cravings.
+
+*Dense and chocolatey,*
+*Fudgy squares of pure bliss,*
+*Dessert perfection.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"description": schema.StringAttribute{

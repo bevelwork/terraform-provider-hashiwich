@@ -41,7 +41,11 @@ func (r *CookieResource) Metadata(ctx context.Context, req resource.MetadataRequ
 
 func (r *CookieResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Mock cookie resource for instructional purposes",
+		MarkdownDescription: `A sweet treat resource that brings joy to any configuration. Perfect for learning simple resource management while indulging in the simple pleasures of baked goods.
+
+*Warm from the oven,*
+*Chocolate chips melting soft,*
+*Sweet comfort found.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"description": schema.StringAttribute{

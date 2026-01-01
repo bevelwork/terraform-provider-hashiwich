@@ -35,7 +35,11 @@ func (d *MenuDataSource) Metadata(ctx context.Context, req datasource.MetadataRe
 
 func (d *MenuDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Mock menu data source that returns base prices for all resources (before upcharge)",
+		MarkdownDescription: `A comprehensive menu data source that provides base pricing information for all menu items. Essential for understanding pricing structures and learning how data sources can aggregate information across multiple resource types.
+
+*Prices listed clear,*
+*Menu of possibilities,*
+*Choices made easy.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"prices": schema.SingleNestedAttribute{

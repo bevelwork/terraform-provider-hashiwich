@@ -65,7 +65,11 @@ resource "hw_bread" "sourdough" {
 - ` + "`white`" + ` - White bread
 - ` + "`multigrain`" + ` - Multigrain bread
 
-**Note:** The ` + "`kind`" + ` attribute accepts any string value, but using common bread types makes your configuration more readable. The resource ID is automatically computed and cannot be set manually.`,
+**Note:** The ` + "`kind`" + ` attribute accepts any string value, but using common bread types makes your configuration more readable. The resource ID is automatically computed and cannot be set manually.
+
+*Golden crust rises,*
+*Warm and fragrant from the oven,*
+*Foundation of joy.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"description": schema.StringAttribute{

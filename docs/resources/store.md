@@ -3,12 +3,19 @@
 page_title: "hw_store Resource - hw"
 subcategory: ""
 description: |-
-  Store resource for sandwich shop. Requires oven, cook(s), tables, chairs, and fridge. Computes total cost and customers per hour capacity.
+  The complete sandwich shop resource that brings together all components into a functioning business. Demonstrates complex resource dependencies, list attributes, and computed values that aggregate costs and calculate capacity from multiple child resources.
+  All pieces unite,
+  Kitchen, staff, and seating,
+  Shop comes to life.
 ---
 
 # hw_store (Resource)
 
-Store resource for sandwich shop. Requires oven, cook(s), tables, chairs, and fridge. Computes total cost and customers per hour capacity.
+The complete sandwich shop resource that brings together all components into a functioning business. Demonstrates complex resource dependencies, list attributes, and computed values that aggregate costs and calculate capacity from multiple child resources.
+
+*All pieces unite,*
+*Kitchen, staff, and seating,*
+*Shop comes to life.*
 
 
 

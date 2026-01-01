@@ -3,12 +3,19 @@
 page_title: "hw_tables Resource - hw"
 subcategory: ""
 description: |-
-  Tables resource for sandwich shop. Required for hw_store. Cost and capacity vary by size.
+  The foundation of dining space, where customers gather to enjoy their meals. Demonstrates quantity-based resources, size variations, and capacity calculations that scale with your restaurant's needs.
+  Wooden surfaces wait,
+  Ready for plates and laughter,
+  Gathering place set.
 ---
 
 # hw_tables (Resource)
 
-Tables resource for sandwich shop. Required for hw_store. Cost and capacity vary by size.
+The foundation of dining space, where customers gather to enjoy their meals. Demonstrates quantity-based resources, size variations, and capacity calculations that scale with your restaurant's needs.
+
+*Wooden surfaces wait,*
+*Ready for plates and laughter,*
+*Gathering place set.*
 
 
 

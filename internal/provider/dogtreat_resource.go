@@ -42,7 +42,11 @@ func (r *DogtreatResource) Metadata(ctx context.Context, req resource.MetadataRe
 
 func (r *DogtreatResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Mock dog treat resource for instructional purposes. Size is determined by is_good_dog attribute.",
+		MarkdownDescription: `A special resource that rewards good behavior! Demonstrates conditional logic and computed attributes based on boolean values. The size of the treat depends entirely on whether the dog has been good.
+
+*Wagging tail awaits,*
+*Good dogs get the bigger treat,*
+*Joy in every bite.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"description": schema.StringAttribute{

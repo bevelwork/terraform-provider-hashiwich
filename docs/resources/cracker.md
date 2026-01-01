@@ -3,12 +3,19 @@
 page_title: "hw_cracker Resource - hw"
 subcategory: ""
 description: |-
-  Mock cracker resource for instructional purposes
+  A crunchy companion resource perfect for soups and spreads. Demonstrates how simple resources with quantity-based pricing can be managed efficiently in Terraform configurations.
+  Golden and crisp,
+  Snapping with each bite,
+  The perfect crunch.
 ---
 
 # hw_cracker (Resource)
 
-Mock cracker resource for instructional purposes
+A crunchy companion resource perfect for soups and spreads. Demonstrates how simple resources with quantity-based pricing can be managed efficiently in Terraform configurations.
+
+*Golden and crisp,*
+*Snapping with each bite,*
+*The perfect crunch.*
 
 
 

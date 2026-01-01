@@ -42,7 +42,11 @@ func (r *CrackerResource) Metadata(ctx context.Context, req resource.MetadataReq
 
 func (r *CrackerResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Mock cracker resource for instructional purposes",
+		MarkdownDescription: `A crunchy companion resource perfect for soups and spreads. Demonstrates how simple resources with quantity-based pricing can be managed efficiently in Terraform configurations.
+
+*Golden and crisp,*
+*Snapping with each bite,*
+*The perfect crunch.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"description": schema.StringAttribute{

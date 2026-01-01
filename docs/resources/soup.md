@@ -3,12 +3,19 @@
 page_title: "hw_soup Resource - hw"
 subcategory: ""
 description: |-
-  Mock soup resource for instructional purposes
+  A comforting bowl of warmth that demonstrates string attributes and computed values. Perfect for learning Terraform basics while imagining a cozy meal on a chilly day.
+  Steam rises gently,
+  Bowl of warmth in cold hands,
+  Comfort in each spoon.
 ---
 
 # hw_soup (Resource)
 
-Mock soup resource for instructional purposes
+A comforting bowl of warmth that demonstrates string attributes and computed values. Perfect for learning Terraform basics while imagining a cozy meal on a chilly day.
+
+*Steam rises gently,*
+*Bowl of warmth in cold hands,*
+*Comfort in each spoon.*
 
 
 

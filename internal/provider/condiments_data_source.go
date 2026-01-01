@@ -34,7 +34,11 @@ func (d *CondimentsDataSource) Metadata(ctx context.Context, req datasource.Meta
 
 func (d *CondimentsDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Mock data source that returns a list of condiments for instructional purposes",
+		MarkdownDescription: `A flavorful data source that returns a comprehensive list of available condiments. Perfect for learning how data sources work and how to query read-only information that enhances your sandwich configurations.
+
+*Sauces and spreads wait,*
+*Flavor enhancers ready,*
+*Taste in every drop.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"condiments": schema.ListAttribute{

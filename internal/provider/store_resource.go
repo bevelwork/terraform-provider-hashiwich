@@ -45,7 +45,11 @@ func (r *StoreResource) Metadata(ctx context.Context, req resource.MetadataReque
 
 func (r *StoreResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Store resource for sandwich shop. Requires oven, cook(s), tables, chairs, and fridge. Computes total cost and customers per hour capacity.",
+		MarkdownDescription: `The complete sandwich shop resource that brings together all components into a functioning business. Demonstrates complex resource dependencies, list attributes, and computed values that aggregate costs and calculate capacity from multiple child resources.
+
+*All pieces unite,*
+*Kitchen, staff, and seating,*
+*Shop comes to life.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{

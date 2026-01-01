@@ -3,12 +3,19 @@
 page_title: "hw_stroopwafel Resource - hw"
 subcategory: ""
 description: |-
-  Mock stroopwafel resource for instructional purposes
+  A delightful Dutch treat resource featuring caramel-filled waffle cookies. Learn Terraform while exploring international flavors and the art of the perfect stroopwafel.
+  Caramel between layers,
+  Dutch delight in each bite,
+  Waffle cookie joy.
 ---
 
 # hw_stroopwafel (Resource)
 
-Mock stroopwafel resource for instructional purposes
+A delightful Dutch treat resource featuring caramel-filled waffle cookies. Learn Terraform while exploring international flavors and the art of the perfect stroopwafel.
+
+*Caramel between layers,*
+*Dutch delight in each bite,*
+*Waffle cookie joy.*
 
 
 

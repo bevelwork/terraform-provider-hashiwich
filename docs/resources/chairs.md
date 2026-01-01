@@ -3,12 +3,19 @@
 page_title: "hw_chairs Resource - hw"
 subcategory: ""
 description: |-
-  Chairs resource for sandwich shop. Required for hw_store. Cost varies by style.
+  Comfortable seating that complements your tables, demonstrating style-based pricing and quantity management. Learn how different resource attributes affect cost while ensuring your customers have a pleasant dining experience.
+  Seats await guests,
+  Comfort in every style,
+  Rest for weary feet.
 ---
 
 # hw_chairs (Resource)
 
-Chairs resource for sandwich shop. Required for hw_store. Cost varies by style.
+Comfortable seating that complements your tables, demonstrating style-based pricing and quantity management. Learn how different resource attributes affect cost while ensuring your customers have a pleasant dining experience.
+
+*Seats await guests,*
+*Comfort in every style,*
+*Rest for weary feet.*
 
 
 

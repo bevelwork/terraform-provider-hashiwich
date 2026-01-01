@@ -38,7 +38,11 @@ func (r *FridgeResource) Metadata(ctx context.Context, req resource.MetadataRequ
 
 func (r *FridgeResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Fridge resource for sandwich shop. Required for hw_store. Cost varies by size.",
+		MarkdownDescription: `Essential cold storage that keeps ingredients fresh and ready. Demonstrates size-based resource configuration and cost calculations, teaching how infrastructure components scale with your business needs.
+
+*Cool air preserves,*
+*Fresh ingredients waiting,*
+*Silent guardian stands.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"size": schema.StringAttribute{

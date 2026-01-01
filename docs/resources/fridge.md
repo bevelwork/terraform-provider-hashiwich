@@ -3,12 +3,19 @@
 page_title: "hw_fridge Resource - hw"
 subcategory: ""
 description: |-
-  Fridge resource for sandwich shop. Required for hw_store. Cost varies by size.
+  Essential cold storage that keeps ingredients fresh and ready. Demonstrates size-based resource configuration and cost calculations, teaching how infrastructure components scale with your business needs.
+  Cool air preserves,
+  Fresh ingredients waiting,
+  Silent guardian stands.
 ---
 
 # hw_fridge (Resource)
 
-Fridge resource for sandwich shop. Required for hw_store. Cost varies by size.
+Essential cold storage that keeps ingredients fresh and ready. Demonstrates size-based resource configuration and cost calculations, teaching how infrastructure components scale with your business needs.
+
+*Cool air preserves,*
+*Fresh ingredients waiting,*
+*Silent guardian stands.*
 
 
 

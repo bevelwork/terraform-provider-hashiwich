@@ -40,6 +40,9 @@ description: |-
   cola, soda, juice, water, lemonade
   Learning Concepts:
   Nested Blocks: The ice block demonstrates how to use nested configuration blocksDynamic Blocks: Use dynamic blocks to conditionally create ice configurationsList Blocks: The ice block is a list, allowing multiple ice configurations
+  Cool liquid refreshment,
+  Ice cubes clinking in the glass,
+  Quenching every thirst.
 ---
 
 # hw_drink (Resource)
@@ -88,6 +91,10 @@ resource "hw_drink" "soda_multiple_ice" {
 - **Nested Blocks**: The `ice` block demonstrates how to use nested configuration blocks
 - **Dynamic Blocks**: Use `dynamic` blocks to conditionally create ice configurations
 - **List Blocks**: The ice block is a list, allowing multiple ice configurations
+
+*Cool liquid refreshment,*
+*Ice cubes clinking in the glass,*
+*Quenching every thirst.*
 
 
 

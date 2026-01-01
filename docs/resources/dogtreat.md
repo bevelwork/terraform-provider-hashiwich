@@ -3,12 +3,19 @@
 page_title: "hw_dogtreat Resource - hw"
 subcategory: ""
 description: |-
-  Mock dog treat resource for instructional purposes. Size is determined by is_good_dog attribute.
+  A special resource that rewards good behavior! Demonstrates conditional logic and computed attributes based on boolean values. The size of the treat depends entirely on whether the dog has been good.
+  Wagging tail awaits,
+  Good dogs get the bigger treat,
+  Joy in every bite.
 ---
 
 # hw_dogtreat (Resource)
 
-Mock dog treat resource for instructional purposes. Size is determined by is_good_dog attribute.
+A special resource that rewards good behavior! Demonstrates conditional logic and computed attributes based on boolean values. The size of the treat depends entirely on whether the dog has been good.
+
+*Wagging tail awaits,*
+*Good dogs get the bigger treat,*
+*Joy in every bite.*
 
 
 

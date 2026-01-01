@@ -41,7 +41,11 @@ func (r *TablesResource) Metadata(ctx context.Context, req resource.MetadataRequ
 
 func (r *TablesResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Tables resource for sandwich shop. Required for hw_store. Cost and capacity vary by size.",
+		MarkdownDescription: `The foundation of dining space, where customers gather to enjoy their meals. Demonstrates quantity-based resources, size variations, and capacity calculations that scale with your restaurant's needs.
+
+*Wooden surfaces wait,*
+*Ready for plates and laughter,*
+*Gathering place set.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"quantity": schema.NumberAttribute{

@@ -3,12 +3,19 @@
 page_title: "hw_condiments Data Source - hw"
 subcategory: ""
 description: |-
-  Mock data source that returns a list of condiments for instructional purposes
+  A flavorful data source that returns a comprehensive list of available condiments. Perfect for learning how data sources work and how to query read-only information that enhances your sandwich configurations.
+  Sauces and spreads wait,
+  Flavor enhancers ready,
+  Taste in every drop.
 ---
 
 # hw_condiments (Data Source)
 
-Mock data source that returns a list of condiments for instructional purposes
+A flavorful data source that returns a comprehensive list of available condiments. Perfect for learning how data sources work and how to query read-only information that enhances your sandwich configurations.
+
+*Sauces and spreads wait,*
+*Flavor enhancers ready,*
+*Taste in every drop.*
 
 
 

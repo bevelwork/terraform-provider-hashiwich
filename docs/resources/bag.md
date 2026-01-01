@@ -3,12 +3,19 @@
 page_title: "hw_bag Resource - hw"
 subcategory: ""
 description: |-
-  Mock bag resource for instructional purposes. Can contain multiple sandwiches.
+  A versatile container resource that holds multiple sandwiches, perfect for takeout orders or meal prep. The bag resource demonstrates list attributes and resource references, allowing you to group sandwiches together for convenient management and organization.
+  Brown paper rustles soft,
+  Sandwiches nestle inside,
+  Lunch is ready now.
 ---
 
 # hw_bag (Resource)
 
-Mock bag resource for instructional purposes. Can contain multiple sandwiches.
+A versatile container resource that holds multiple sandwiches, perfect for takeout orders or meal prep. The bag resource demonstrates list attributes and resource references, allowing you to group sandwiches together for convenient management and organization.
+
+*Brown paper rustles soft,*
+*Sandwiches nestle inside,*
+*Lunch is ready now.*
 
 
 

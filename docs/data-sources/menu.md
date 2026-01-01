@@ -3,12 +3,19 @@
 page_title: "hw_menu Data Source - hw"
 subcategory: ""
 description: |-
-  Mock menu data source that returns base prices for all resources (before upcharge)
+  A comprehensive menu data source that provides base pricing information for all menu items. Essential for understanding pricing structures and learning how data sources can aggregate information across multiple resource types.
+  Prices listed clear,
+  Menu of possibilities,
+  Choices made easy.
 ---
 
 # hw_menu (Data Source)
 
-Mock menu data source that returns base prices for all resources (before upcharge)
+A comprehensive menu data source that provides base pricing information for all menu items. Essential for understanding pricing structures and learning how data sources can aggregate information across multiple resource types.
+
+*Prices listed clear,*
+*Menu of possibilities,*
+*Choices made easy.*
 
 
 

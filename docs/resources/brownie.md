@@ -3,12 +3,19 @@
 page_title: "hw_brownie Resource - hw"
 subcategory: ""
 description: |-
-  Mock brownie resource for instructional purposes
+  A rich, fudgy dessert resource that demonstrates the sweeter side of Terraform. Learn resource management while satisfying your chocolate cravings.
+  Dense and chocolatey,
+  Fudgy squares of pure bliss,
+  Dessert perfection.
 ---
 
 # hw_brownie (Resource)
 
-Mock brownie resource for instructional purposes
+A rich, fudgy dessert resource that demonstrates the sweeter side of Terraform. Learn resource management while satisfying your chocolate cravings.
+
+*Dense and chocolatey,*
+*Fudgy squares of pure bliss,*
+*Dessert perfection.*
 
 
 

@@ -3,12 +3,19 @@
 page_title: "hw_oven Resource - hw"
 subcategory: ""
 description: |-
-  Oven resource for sandwich shop. Required for hw_store.
+  The heart of the kitchen, this oven resource is essential for any sandwich shop operation. Demonstrates resource dependencies and cost calculations based on equipment type, showing how infrastructure components work together.
+  Heat radiates warm,
+  Baking bread to golden brown,
+  Kitchen's steady heart.
 ---
 
 # hw_oven (Resource)
 
-Oven resource for sandwich shop. Required for hw_store.
+The heart of the kitchen, this oven resource is essential for any sandwich shop operation. Demonstrates resource dependencies and cost calculations based on equipment type, showing how infrastructure components work together.
+
+*Heat radiates warm,*
+*Baking bread to golden brown,*
+*Kitchen's steady heart.*
 
 
 

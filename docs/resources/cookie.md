@@ -3,12 +3,19 @@
 page_title: "hw_cookie Resource - hw"
 subcategory: ""
 description: |-
-  Mock cookie resource for instructional purposes
+  A sweet treat resource that brings joy to any configuration. Perfect for learning simple resource management while indulging in the simple pleasures of baked goods.
+  Warm from the oven,
+  Chocolate chips melting soft,
+  Sweet comfort found.
 ---
 
 # hw_cookie (Resource)
 
-Mock cookie resource for instructional purposes
+A sweet treat resource that brings joy to any configuration. Perfect for learning simple resource management while indulging in the simple pleasures of baked goods.
+
+*Warm from the oven,*
+*Chocolate chips melting soft,*
+*Sweet comfort found.*
 
 
 

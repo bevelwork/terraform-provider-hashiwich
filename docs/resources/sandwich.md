@@ -26,6 +26,9 @@ description: |-
   This resource depends on hw_bread and hw_meat resourcesTerraform will automatically create bread and meat resources before creating the sandwichIf bread_id or meat_id changes, the sandwich will be recreated with a new ID
   Computed Attributes:
   name: Automatically generated as "{meat} on {bread}" (e.g., "turkey on rye")price: Fixed at $5.00 (plus any provider-level upcharge)id: Automatically generated unique identifier
+  Bread and meat unite,
+  Simple perfection in layers,
+  Lunchtime happiness.
 ---
 
 # hw_sandwich (Resource)
@@ -62,6 +65,10 @@ resource "hw_sandwich" "turkey_on_rye" {
 - `name`: Automatically generated as "{meat} on {bread}" (e.g., "turkey on rye")
 - `price`: Fixed at $5.00 (plus any provider-level upcharge)
 - `id`: Automatically generated unique identifier
+
+*Bread and meat unite,*
+*Simple perfection in layers,*
+*Lunchtime happiness.*
 
 
 

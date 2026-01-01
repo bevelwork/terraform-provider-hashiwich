@@ -20,6 +20,9 @@ description: |-
   Common Bread Types:
   rye - Classic rye breadsourdough - Tangy sourdough breadwheat - Whole wheat breadciabatta - Italian ciabatta breadwhite - White breadmultigrain - Multigrain bread
   Note: The kind attribute accepts any string value, but using common bread types makes your configuration more readable. The resource ID is automatically computed and cannot be set manually.
+  Golden crust rises,
+  Warm and fragrant from the oven,
+  Foundation of joy.
 ---
 
 # hw_bread (Resource)
@@ -51,6 +54,10 @@ resource "hw_bread" "sourdough" {
 - `multigrain` - Multigrain bread
 
 **Note:** The `kind` attribute accepts any string value, but using common bread types makes your configuration more readable. The resource ID is automatically computed and cannot be set manually.
+
+*Golden crust rises,*
+*Warm and fragrant from the oven,*
+*Foundation of joy.*
 
 
 

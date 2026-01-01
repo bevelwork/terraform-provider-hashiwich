@@ -3,12 +3,19 @@
 page_title: "hw_cook Resource - hw"
 subcategory: ""
 description: |-
-  Cook resource for sandwich shop. Required for hw_store. Cost represents daily wage.
+  The skilled artisan who brings your sandwiches to life. This resource demonstrates how experience levels affect both cost and efficiency, teaching conditional logic and computed attributes based on skill tiers.
+  Hands that craft with care,
+  Experience shapes each sandwich,
+  Artistry in motion.
 ---
 
 # hw_cook (Resource)
 
-Cook resource for sandwich shop. Required for hw_store. Cost represents daily wage.
+The skilled artisan who brings your sandwiches to life. This resource demonstrates how experience levels affect both cost and efficiency, teaching conditional logic and computed attributes based on skill tiers.
+
+*Hands that craft with care,*
+*Experience shapes each sandwich,*
+*Artistry in motion.*
 
 
 

@@ -42,7 +42,11 @@ func (r *SoupResource) Metadata(ctx context.Context, req resource.MetadataReques
 
 func (r *SoupResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Mock soup resource for instructional purposes",
+		MarkdownDescription: `A comforting bowl of warmth that demonstrates string attributes and computed values. Perfect for learning Terraform basics while imagining a cozy meal on a chilly day.
+
+*Steam rises gently,*
+*Bowl of warmth in cold hands,*
+*Comfort in each spoon.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"description": schema.StringAttribute{

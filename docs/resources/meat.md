@@ -25,6 +25,9 @@ description: |-
   Common Meat Types:
   turkey - Sliced turkey breastham - Deli hamroast beef - Roast beefchicken - Grilled chickenpastrami - Spiced pastramisalami - Italian salami
   Note: The kind attribute accepts any string value, including multi-word names (e.g., "roast beef"). The resource ID is automatically computed and cannot be set manually.
+  Sliced thin and perfect,
+  Layers of savory delight,
+  The heart of the meal.
 ---
 
 # hw_meat (Resource)
@@ -61,6 +64,10 @@ resource "hw_meat" "roast_beef" {
 - `salami` - Italian salami
 
 **Note:** The `kind` attribute accepts any string value, including multi-word names (e.g., "roast beef"). The resource ID is automatically computed and cannot be set manually.
+
+*Sliced thin and perfect,*
+*Layers of savory delight,*
+*The heart of the meal.*
 
 
 

@@ -41,7 +41,11 @@ func (r *SilverwareResource) Metadata(ctx context.Context, req resource.Metadata
 
 func (r *SilverwareResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Mock silverware pack resource for instructional purposes",
+		MarkdownDescription: `Essential dining tools bundled together, demonstrating quantity-based resources and bulk pricing. Learn to manage sets and packs while setting the table for your Terraform journey.
+
+*Fork, knife, and spoon,*
+*Shining in the light,*
+*Tools for every meal.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"description": schema.StringAttribute{

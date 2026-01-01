@@ -39,7 +39,11 @@ func (r *CookResource) Metadata(ctx context.Context, req resource.MetadataReques
 
 func (r *CookResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Cook resource for sandwich shop. Required for hw_store. Cost represents daily wage.",
+		MarkdownDescription: `The skilled artisan who brings your sandwiches to life. This resource demonstrates how experience levels affect both cost and efficiency, teaching conditional logic and computed attributes based on skill tiers.
+
+*Hands that craft with care,*
+*Experience shapes each sandwich,*
+*Artistry in motion.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{

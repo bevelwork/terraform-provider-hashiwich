@@ -75,7 +75,11 @@ resource "hw_sandwich" "turkey_on_rye" {
 **Computed Attributes:**
 - ` + "`name`" + `: Automatically generated as "{meat} on {bread}" (e.g., "turkey on rye")
 - ` + "`price`" + `: Fixed at $5.00 (plus any provider-level upcharge)
-- ` + "`id`" + `: Automatically generated unique identifier`,
+- ` + "`id`" + `: Automatically generated unique identifier
+
+*Bread and meat unite,*
+*Simple perfection in layers,*
+*Lunchtime happiness.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"description": schema.StringAttribute{

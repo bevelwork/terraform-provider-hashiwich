@@ -41,7 +41,11 @@ func (r *NapkinResource) Metadata(ctx context.Context, req resource.MetadataRequ
 
 func (r *NapkinResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Mock napkin resource for instructional purposes",
+		MarkdownDescription: `A humble but essential resource that demonstrates numeric attributes and simple computations. Sometimes the smallest resources teach the biggest lessons about Terraform fundamentals.
+
+*Soft paper squares,*
+*Ready for messy hands,*
+*Simple necessity.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"description": schema.StringAttribute{

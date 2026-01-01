@@ -3,12 +3,19 @@
 page_title: "hw_salad Resource - hw"
 subcategory: ""
 description: |-
-  Mock salad resource for instructional purposes
+  A fresh and healthy option that showcases multiple string attributes working together. Learn about resource configuration while building the perfect crisp, green meal.
+  Fresh greens in a bowl,
+  Dressing drizzled with care,
+  Nature's crisp delight.
 ---
 
 # hw_salad (Resource)
 
-Mock salad resource for instructional purposes
+A fresh and healthy option that showcases multiple string attributes working together. Learn about resource configuration while building the perfect crisp, green meal.
+
+*Fresh greens in a bowl,*
+*Dressing drizzled with care,*
+*Nature's crisp delight.*
 
 
 

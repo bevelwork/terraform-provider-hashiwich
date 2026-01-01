@@ -3,12 +3,19 @@
 page_title: "hw_napkin Resource - hw"
 subcategory: ""
 description: |-
-  Mock napkin resource for instructional purposes
+  A humble but essential resource that demonstrates numeric attributes and simple computations. Sometimes the smallest resources teach the biggest lessons about Terraform fundamentals.
+  Soft paper squares,
+  Ready for messy hands,
+  Simple necessity.
 ---
 
 # hw_napkin (Resource)
 
-Mock napkin resource for instructional purposes
+A humble but essential resource that demonstrates numeric attributes and simple computations. Sometimes the smallest resources teach the biggest lessons about Terraform fundamentals.
+
+*Soft paper squares,*
+*Ready for messy hands,*
+*Simple necessity.*
 
 
 

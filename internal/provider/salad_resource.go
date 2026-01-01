@@ -43,7 +43,11 @@ func (r *SaladResource) Metadata(ctx context.Context, req resource.MetadataReque
 
 func (r *SaladResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Mock salad resource for instructional purposes",
+		MarkdownDescription: `A fresh and healthy option that showcases multiple string attributes working together. Learn about resource configuration while building the perfect crisp, green meal.
+
+*Fresh greens in a bowl,*
+*Dressing drizzled with care,*
+*Nature's crisp delight.*`,
 
 		Attributes: map[string]schema.Attribute{
 			"description": schema.StringAttribute{
