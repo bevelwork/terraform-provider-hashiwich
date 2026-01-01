@@ -4,6 +4,41 @@ page_title: "hw_stroopwafel Resource - hw"
 subcategory: ""
 description: |-
   A delightful Dutch treat resource featuring caramel-filled waffle cookies. Learn Terraform while exploring international flavors and the art of the perfect stroopwafel.
+  Example Usage:
+  
+  # Classic stroopwafel
+  resource "hw_stroopwafel" "classic" {
+    kind        = "classic"
+    description = "Traditional Dutch stroopwafel"
+  }
+  
+  # Caramel stroopwafel
+  resource "hw_stroopwafel" "caramel" {
+    kind        = "caramel"
+    description = "Extra caramel stroopwafel"
+  }
+  
+  # Chocolate stroopwafel
+  resource "hw_stroopwafel" "chocolate" {
+    kind        = "chocolate"
+    description = "Chocolate-dipped stroopwafel"
+  }
+  
+  # Using for_each for variety
+  variable "stroopwafel_types" {
+    type    = set(string)
+    default = ["classic", "caramel", "chocolate", "honey"]
+  }
+  
+  resource "hw_stroopwafel" "variety_pack" {
+    for_each = var.stroopwafel_types
+    
+    kind        = each.value
+    description = "${each.value} stroopwafel"
+  }
+  
+  Key Concepts:
+  Demonstrates string attribute for stroopwafel kindShows computed price (always $1.75)Simple resource perfect for learningCommon kinds: classic, caramel, chocolate, honey
   Caramel between layers,
   Dutch delight in each bite,
   Waffle cookie joy.
@@ -12,6 +47,47 @@ description: |-
 # hw_stroopwafel (Resource)
 
 A delightful Dutch treat resource featuring caramel-filled waffle cookies. Learn Terraform while exploring international flavors and the art of the perfect stroopwafel.
+
+**Example Usage:**
+
+```hcl
+# Classic stroopwafel
+resource "hw_stroopwafel" "classic" {
+  kind        = "classic"
+  description = "Traditional Dutch stroopwafel"
+}
+
+# Caramel stroopwafel
+resource "hw_stroopwafel" "caramel" {
+  kind        = "caramel"
+  description = "Extra caramel stroopwafel"
+}
+
+# Chocolate stroopwafel
+resource "hw_stroopwafel" "chocolate" {
+  kind        = "chocolate"
+  description = "Chocolate-dipped stroopwafel"
+}
+
+# Using for_each for variety
+variable "stroopwafel_types" {
+  type    = set(string)
+  default = ["classic", "caramel", "chocolate", "honey"]
+}
+
+resource "hw_stroopwafel" "variety_pack" {
+  for_each = var.stroopwafel_types
+  
+  kind        = each.value
+  description = "${each.value} stroopwafel"
+}
+```
+
+**Key Concepts:**
+- Demonstrates **string attribute** for stroopwafel kind
+- Shows **computed price** (always $1.75)
+- Simple resource perfect for learning
+- Common kinds: classic, caramel, chocolate, honey
 
 *Caramel between layers,*
 *Dutch delight in each bite,*

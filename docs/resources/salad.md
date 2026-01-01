@@ -4,6 +4,47 @@ page_title: "hw_salad Resource - hw"
 subcategory: ""
 description: |-
   A fresh and healthy option that showcases multiple string attributes working together. Learn about resource configuration while building the perfect crisp, green meal.
+  Example Usage:
+  
+  # Simple salad example
+  resource "hw_salad" "caesar" {
+    kind     = "caesar"
+    dressing = "caesar"
+    size     = "large"
+    description = "Classic Caesar salad"
+  }
+  
+  # Garden salad with different dressing
+  resource "hw_salad" "garden" {
+    kind     = "garden"
+    dressing = "ranch"
+    size     = "medium"
+    description = "Fresh garden salad with ranch dressing"
+  }
+  
+  # Using variables for salad configuration
+  variable "salad_config" {
+    type = object({
+      kind     = string
+      dressing = string
+      size     = string
+    })
+    default = {
+      kind     = "cobb"
+      dressing = "blue cheese"
+      size     = "large"
+    }
+  }
+  
+  resource "hw_salad" "custom" {
+    kind     = var.salad_config.kind
+    dressing = var.salad_config.dressing
+    size     = var.salad_config.size
+    description = "Custom ${var.salad_config.size} ${var.salad_config.kind} salad"
+  }
+  
+  Key Concepts:
+  Demonstrates multiple required string attributesShows how to combine kind, dressing, and sizePrice is computed automatically ($4.00)Common sizes: small, medium, large
   Fresh greens in a bowl,
   Dressing drizzled with care,
   Nature's crisp delight.
@@ -12,6 +53,53 @@ description: |-
 # hw_salad (Resource)
 
 A fresh and healthy option that showcases multiple string attributes working together. Learn about resource configuration while building the perfect crisp, green meal.
+
+**Example Usage:**
+
+```hcl
+# Simple salad example
+resource "hw_salad" "caesar" {
+  kind     = "caesar"
+  dressing = "caesar"
+  size     = "large"
+  description = "Classic Caesar salad"
+}
+
+# Garden salad with different dressing
+resource "hw_salad" "garden" {
+  kind     = "garden"
+  dressing = "ranch"
+  size     = "medium"
+  description = "Fresh garden salad with ranch dressing"
+}
+
+# Using variables for salad configuration
+variable "salad_config" {
+  type = object({
+    kind     = string
+    dressing = string
+    size     = string
+  })
+  default = {
+    kind     = "cobb"
+    dressing = "blue cheese"
+    size     = "large"
+  }
+}
+
+resource "hw_salad" "custom" {
+  kind     = var.salad_config.kind
+  dressing = var.salad_config.dressing
+  size     = var.salad_config.size
+  description = "Custom ${var.salad_config.size} ${var.salad_config.kind} salad"
+}
+```
+
+**Key Concepts:**
+- Demonstrates **multiple required string attributes**
+- Shows how to combine kind, dressing, and size
+- Price is computed automatically ($4.00)
+- Common sizes: small, medium, large
 
 *Fresh greens in a bowl,*
 *Dressing drizzled with care,*

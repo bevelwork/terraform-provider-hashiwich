@@ -4,6 +4,53 @@ page_title: "hw_deli_meats Data Source - hw"
 subcategory: ""
 description: |-
   A savory data source that provides a complete catalog of available deli meats. Learn how to query data sources to discover available options before creating your meat resources.
+  Example Usage:
+  
+  # Get all available deli meats
+  data "hw_deli_meats" "available" {}
+  
+  # Create meat resources for each available type
+  resource "hw_meat" "all_types" {
+    for_each = toset(data.hw_deli_meats.available.meats)
+    
+    kind        = each.value
+    description = "Deli meat: ${each.value}"
+  }
+  
+  # Use in outputs
+  output "available_meats" {
+    value = data.hw_deli_meats.available.meats
+  }
+  
+  # Filter meats based on criteria
+  locals {
+    all_meats     = data.hw_deli_meats.available.meats
+    poultry_meats = [
+      for meat in local.all_meats : meat
+      if contains(["turkey", "chicken"], meat)
+    ]
+  }
+  
+  # Create only poultry sandwiches
+  resource "hw_bread" "rye" {
+    kind = "rye"
+  }
+  
+  resource "hw_sandwich" "poultry" {
+    for_each = toset(local.poultry_meats)
+    
+    bread_id = hw_bread.rye.id
+    meat_id  = hw_meat.all_types[each.value].id
+    description = "${each.value} sandwich on rye"
+  }
+  
+  # Count available meats
+  output "meat_count" {
+    value = length(data.hw_deli_meats.available.meats)
+  }
+  
+  Key Concepts:
+  Demonstrates data sources for discoveryReturns a list of available meat typesPerfect for dynamic resource creation with for_eachUse data.hw_deli_meats.available.meats to access the list
   Sliced thin and ready,
   Meats arrayed in perfect rows,
   Choices abound here.
@@ -12,6 +59,59 @@ description: |-
 # hw_deli_meats (Data Source)
 
 A savory data source that provides a complete catalog of available deli meats. Learn how to query data sources to discover available options before creating your meat resources.
+
+**Example Usage:**
+
+```hcl
+# Get all available deli meats
+data "hw_deli_meats" "available" {}
+
+# Create meat resources for each available type
+resource "hw_meat" "all_types" {
+  for_each = toset(data.hw_deli_meats.available.meats)
+  
+  kind        = each.value
+  description = "Deli meat: ${each.value}"
+}
+
+# Use in outputs
+output "available_meats" {
+  value = data.hw_deli_meats.available.meats
+}
+
+# Filter meats based on criteria
+locals {
+  all_meats     = data.hw_deli_meats.available.meats
+  poultry_meats = [
+    for meat in local.all_meats : meat
+    if contains(["turkey", "chicken"], meat)
+  ]
+}
+
+# Create only poultry sandwiches
+resource "hw_bread" "rye" {
+  kind = "rye"
+}
+
+resource "hw_sandwich" "poultry" {
+  for_each = toset(local.poultry_meats)
+  
+  bread_id = hw_bread.rye.id
+  meat_id  = hw_meat.all_types[each.value].id
+  description = "${each.value} sandwich on rye"
+}
+
+# Count available meats
+output "meat_count" {
+  value = length(data.hw_deli_meats.available.meats)
+}
+```
+
+**Key Concepts:**
+- Demonstrates **data sources for discovery**
+- Returns a list of available meat types
+- Perfect for dynamic resource creation with `for_each`
+- Use `data.hw_deli_meats.available.meats` to access the list
 
 *Sliced thin and ready,*
 *Meats arrayed in perfect rows,*

@@ -4,6 +4,42 @@ page_title: "hw_fridge Resource - hw"
 subcategory: ""
 description: |-
   Essential cold storage that keeps ingredients fresh and ready. Demonstrates size-based resource configuration and cost calculations, teaching how infrastructure components scale with your business needs.
+  Example Usage:
+  
+  # Small fridge
+  resource "hw_fridge" "small" {
+    size        = "small"
+    description = "Small fridge for limited space"
+    # cost computed as $300
+  }
+  
+  # Medium fridge
+  resource "hw_fridge" "medium" {
+    size        = "medium"
+    description = "Medium fridge for standard operations"
+    # cost computed as $500
+  }
+  
+  # Large fridge
+  resource "hw_fridge" "large" {
+    size        = "large"
+    description = "Large fridge for high-volume operations"
+    # cost computed as $800
+  }
+  
+  # Using variables
+  variable "fridge_size" {
+    type    = string
+    default = "medium"
+  }
+  
+  resource "hw_fridge" "variable" {
+    size        = var.fridge_size
+    description = "Fridge configured from variable"
+  }
+  
+  Key Concepts:
+  Demonstrates size-based cost calculationRequired for hw_store resourceSizes: small ($300), medium ($500), large ($800)Cost is automatically computed
   Cool air preserves,
   Fresh ingredients waiting,
   Silent guardian stands.
@@ -12,6 +48,48 @@ description: |-
 # hw_fridge (Resource)
 
 Essential cold storage that keeps ingredients fresh and ready. Demonstrates size-based resource configuration and cost calculations, teaching how infrastructure components scale with your business needs.
+
+**Example Usage:**
+
+```hcl
+# Small fridge
+resource "hw_fridge" "small" {
+  size        = "small"
+  description = "Small fridge for limited space"
+  # cost computed as $300
+}
+
+# Medium fridge
+resource "hw_fridge" "medium" {
+  size        = "medium"
+  description = "Medium fridge for standard operations"
+  # cost computed as $500
+}
+
+# Large fridge
+resource "hw_fridge" "large" {
+  size        = "large"
+  description = "Large fridge for high-volume operations"
+  # cost computed as $800
+}
+
+# Using variables
+variable "fridge_size" {
+  type    = string
+  default = "medium"
+}
+
+resource "hw_fridge" "variable" {
+  size        = var.fridge_size
+  description = "Fridge configured from variable"
+}
+```
+
+**Key Concepts:**
+- Demonstrates **size-based cost calculation**
+- Required for `hw_store` resource
+- Sizes: small ($300), medium ($500), large ($800)
+- Cost is automatically computed
 
 *Cool air preserves,*
 *Fresh ingredients waiting,*

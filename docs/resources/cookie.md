@@ -4,6 +4,35 @@ page_title: "hw_cookie Resource - hw"
 subcategory: ""
 description: |-
   A sweet treat resource that brings joy to any configuration. Perfect for learning simple resource management while indulging in the simple pleasures of baked goods.
+  Example Usage:
+  
+  # Chocolate chip cookie
+  resource "hw_cookie" "chocolate_chip" {
+    kind        = "chocolate chip"
+    description = "Classic chocolate chip cookie"
+  }
+  
+  # Oatmeal cookie
+  resource "hw_cookie" "oatmeal" {
+    kind        = "oatmeal"
+    description = "Hearty oatmeal cookie"
+  }
+  
+  # Using for_each to create cookie menu
+  variable "cookie_types" {
+    type    = list(string)
+    default = ["chocolate chip", "oatmeal", "sugar", "snickerdoodle"]
+  }
+  
+  resource "hw_cookie" "menu" {
+    for_each = toset(var.cookie_types)
+    
+    kind        = each.value
+    description = "${each.value} cookie"
+  }
+  
+  Key Concepts:
+  Demonstrates simple string attribute (kind)Shows computed price (always $1.50)Perfect for learning basic resource structureCommon kinds: chocolate chip, oatmeal, sugar, snickerdoodle
   Warm from the oven,
   Chocolate chips melting soft,
   Sweet comfort found.
@@ -12,6 +41,41 @@ description: |-
 # hw_cookie (Resource)
 
 A sweet treat resource that brings joy to any configuration. Perfect for learning simple resource management while indulging in the simple pleasures of baked goods.
+
+**Example Usage:**
+
+```hcl
+# Chocolate chip cookie
+resource "hw_cookie" "chocolate_chip" {
+  kind        = "chocolate chip"
+  description = "Classic chocolate chip cookie"
+}
+
+# Oatmeal cookie
+resource "hw_cookie" "oatmeal" {
+  kind        = "oatmeal"
+  description = "Hearty oatmeal cookie"
+}
+
+# Using for_each to create cookie menu
+variable "cookie_types" {
+  type    = list(string)
+  default = ["chocolate chip", "oatmeal", "sugar", "snickerdoodle"]
+}
+
+resource "hw_cookie" "menu" {
+  for_each = toset(var.cookie_types)
+  
+  kind        = each.value
+  description = "${each.value} cookie"
+}
+```
+
+**Key Concepts:**
+- Demonstrates **simple string attribute** (kind)
+- Shows **computed price** (always $1.50)
+- Perfect for learning basic resource structure
+- Common kinds: chocolate chip, oatmeal, sugar, snickerdoodle
 
 *Warm from the oven,*
 *Chocolate chips melting soft,*
