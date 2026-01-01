@@ -101,13 +101,13 @@ output "public_menu_output" {
 output "sandwich_order_with_sensitive" {
   description = "Order with sensitive customer data"
   value = {
-    order_id     = "ORD-12345"                    # Not sensitive
-    customer_id  = "CUST-67890"                   # Not sensitive
-    email        = var.sensitive_customer_email   # Sensitive
-    total_price  = 12.50                          # Not sensitive
-    payment_token = "tok_abc123xyz"               # Sensitive (if this were real)
+    order_id      = "ORD-12345"                  # Not sensitive
+    customer_id   = "CUST-67890"                 # Not sensitive
+    email         = var.sensitive_customer_email # Sensitive
+    total_price   = 12.50                        # Not sensitive
+    payment_token = "tok_abc123xyz"              # Sensitive (if this were real)
   }
-  sensitive = true  # Entire output marked sensitive
+  sensitive = true # Entire output marked sensitive
 }
 
 # Better approach: Separate sensitive and non-sensitive outputs
@@ -124,7 +124,7 @@ output "sandwich_order_public" {
 output "sandwich_order_sensitive" {
   description = "Sensitive order information (redacted)"
   value = {
-    email        = var.sensitive_customer_email
+    email         = var.sensitive_customer_email
     payment_token = "tok_abc123xyz"
   }
   sensitive = true
@@ -166,7 +166,7 @@ output "sandwich_order_sensitive" {
 locals {
   # Using sensitive variable in expression
   sensitive_connection_string = "https://api.example.com?key=${var.sensitive_api_key}"
-  
+
   # Combining sensitive and non-sensitive
   sensitive_config = {
     endpoint = local.public_api_endpoint
@@ -205,10 +205,10 @@ output "conditional_sensitive_output" {
   value = var.include_sensitive_data ? {
     api_key = var.sensitive_api_key
     secret  = "secret_value"
-  } : {
+    } : {
     message = "Sensitive data not included"
   }
-  sensitive = true  # Must be static boolean - mark as sensitive if it might contain secrets
+  sensitive = true # Must be static boolean - mark as sensitive if it might contain secrets
 }
 
 # Option 2: Create separate outputs for sensitive and non-sensitive cases
@@ -236,11 +236,11 @@ output "non_sensitive_output_when_disabled" {
 
 variable "sensitive_credentials" {
   description = "Map of sensitive credentials"
-  type = map(string)
-  sensitive = true
+  type        = map(string)
+  sensitive   = true
   default = {
-    api_key    = "sk_live_1234567890"
-    db_password = "SecurePassword123!"
+    api_key      = "sk_live_1234567890"
+    db_password  = "SecurePassword123!"
     secret_token = "tok_abc123xyz"
   }
 }
@@ -260,9 +260,9 @@ output "sensitive_credentials_output" {
 output "non_sensitive_example" {
   description = "Non-sensitive output - fully visible in terraform output"
   value = {
-    menu_item  = "Turkey Sandwich"
-    price      = 5.00
-    available  = true
+    menu_item = "Turkey Sandwich"
+    price     = 5.00
+    available = true
   }
 }
 
@@ -270,9 +270,9 @@ output "non_sensitive_example" {
 output "fully_sensitive_example" {
   description = "Fully sensitive output - completely redacted"
   value = {
-    api_key    = var.sensitive_api_key
-    password   = var.sensitive_database_password
-    secret     = "hidden_secret"
+    api_key  = var.sensitive_api_key
+    password = var.sensitive_database_password
+    secret   = "hidden_secret"
   }
   sensitive = true
 }
@@ -282,7 +282,7 @@ output "mixed_sensitive_example" {
   description = "Mixed output - entire output redacted because it contains sensitive data"
   value = {
     public_data  = "This is public"
-    private_data   = var.sensitive_api_key
+    private_data = var.sensitive_api_key
     more_public  = "Also public"
   }
   sensitive = true
@@ -371,9 +371,9 @@ output "mixed_sensitive_example" {
 variable "customer_pii" {
   description = "Customer personal information (PII - sensitive)"
   type = object({
-    email    = string
-    phone    = string
-    address  = string
+    email   = string
+    phone   = string
+    address = string
   })
   sensitive = true
   default = {
@@ -394,9 +394,9 @@ output "customer_order_summary" {
   description = "Public order summary (no PII)"
   value = {
     order_id    = "ORD-12345"
-    total_price  = 25.50
-    item_count   = 3
-    order_date   = "2024-01-01"
+    total_price = 25.50
+    item_count  = 3
+    order_date  = "2024-01-01"
     # No email, phone, or address - safe to display
   }
 }

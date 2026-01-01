@@ -9,14 +9,14 @@
 locals {
   # jsondecode(): Parse JSON string into Terraform object
   # Syntax: jsondecode(json_string)
-  
+
   # Load JSON from file (safe with try() for missing files)
   json_from_file = jsondecode(try(
     file("${path.module}/config/stores.json"),
     "{}"
   ))
   # Result: Terraform object/map from JSON file
-  
+
   # Load JSON with default structure
   json_stores_config = jsondecode(try(
     file("${path.module}/config/stores.json"),
@@ -44,14 +44,14 @@ locals {
     ]
   }))
   # Result: Terraform object from inline JSON
-  
+
   # Simple JSON object
   json_simple_config = jsondecode(jsonencode({
     environment = "production"
     region      = "us-east-1"
     enabled     = true
   }))
-  
+
   # JSON array
   json_array_example = jsondecode(jsonencode([
     { name = "bread-1", kind = "rye" },
@@ -70,14 +70,14 @@ locals {
   # Access top-level properties
   json_store_name = try(local.json_from_file.store_name, "Default Store")
   json_capacity   = try(local.json_from_file.capacity, 50)
-  
+
   # Access nested properties
   json_nested_value = try(local.json_from_file.config.settings.timeout, 30)
-  
+
   # Access array elements
   json_first_item = try(local.json_array_example[0], { name = "default", kind = "rye" })
   json_item_name  = try(local.json_array_example[0].name, "default")
-  
+
   # Safe access with multiple fallbacks
   json_safe_access = try(
     local.json_from_file.store.name,
@@ -112,10 +112,10 @@ locals {
       ]
     })
   ))
-  
+
   # Convert JSON array to map for for_each
   json_breads_map = {
-    for idx, bread in local.json_breads_config.breads : 
+    for idx, bread in local.json_breads_config.breads :
     bread.kind => bread
   }
   # Result: { "rye" => { kind = "rye", description = "..." }, ... }
@@ -124,7 +124,7 @@ locals {
 # Create resources from JSON data using for_each
 resource "hw_bread" "json_breads" {
   for_each = local.json_breads_map
-  
+
   kind        = each.value.kind
   description = try(each.value.description, "Bread from JSON config")
 }
@@ -146,14 +146,14 @@ locals {
       ]
     })
   ))
-  
+
   json_meats_list = local.json_meats_config.meats
 }
 
 # Create resources using count
 resource "hw_meat" "json_meats" {
   count = length(local.json_meats_list)
-  
+
   kind        = local.json_meats_list[count.index].kind
   description = try(local.json_meats_list[count.index].description, "Meat from JSON")
 }
@@ -190,11 +190,11 @@ locals {
       }
     })
   ))
-  
+
   # Access nested values
-  json_oven_type = try(local.json_complex_config.store.equipment.oven.type, "standard")
+  json_oven_type   = try(local.json_complex_config.store.equipment.oven.type, "standard")
   json_fridge_size = try(local.json_complex_config.store.equipment.fridge.size, "medium")
-  
+
   # Access array elements
   json_first_staff = try(local.json_complex_config.store.staff[0], {})
   json_staff_names = [for staff in try(local.json_complex_config.store.staff, []) : staff.name]
@@ -218,9 +218,9 @@ resource "hw_cook" "json_cooks" {
     staff.name => staff
     if staff.role == "cook"
   }
-  
-  name       = each.value.name
-  experience = each.value.experience
+
+  name        = each.value.name
+  experience  = each.value.experience
   description = "Cook from JSON config: ${each.value.name}"
 }
 
@@ -241,7 +241,7 @@ locals {
       }
     })
   ))
-  
+
   json_enable_premium = try(local.json_features_config.features.enable_premium_bread, false)
   json_max_items      = try(local.json_features_config.features.max_items, 5)
 }
@@ -249,7 +249,7 @@ locals {
 # Conditional resource creation based on JSON
 resource "hw_bread" "json_premium_bread" {
   count = local.json_enable_premium ? 1 : 0
-  
+
   kind        = "ciabatta"
   description = "Premium bread enabled via JSON config"
 }
@@ -271,25 +271,25 @@ locals {
       ]
     })
   ))
-  
+
   # Transform: Filter items by type
   json_bread_items = [
     for item in try(local.json_raw_data.items, []) :
     item if item.type == "bread"
   ]
-  
+
   # Transform: Create map keyed by name
   json_items_by_name = {
     for item in try(local.json_raw_data.items, []) :
     item.name => item
   }
-  
+
   # Transform: Calculate totals
   json_total_price = sum([
     for item in try(local.json_raw_data.items, []) :
     try(item.price, 0)
   ])
-  
+
   # Transform: Extract unique types
   json_unique_types = toset([
     for item in try(local.json_raw_data.items, []) :
@@ -308,22 +308,22 @@ locals {
     jsondecode(file("${path.module}/config/validated.json")),
     null
   )
-  
+
   # Check if JSON loaded successfully
   json_is_valid = local.json_validated_config != null
-  
+
   # Validate required fields exist
   json_has_required_fields = local.json_is_valid && try(local.json_validated_config.store_name, null) != null && try(local.json_validated_config.capacity, null) != null
-  
+
   # Safe access with validation
   json_validated_store_name = local.json_has_required_fields ? local.json_validated_config.store_name : "Default Store"
-  
+
   # Validate JSON array structure
   json_validated_items = try(
     local.json_validated_config.items,
     []
   )
-  
+
   json_items_are_valid = length(local.json_validated_items) > 0 && alltrue([for item in local.json_validated_items : try(item.name, null) != null && try(item.kind, null) != null])
 }
 
@@ -374,7 +374,7 @@ resource "hw_cook" "json_store_cooks" {
     for idx, cook in local.json_store_full_config.store.cooks :
     cook.name => cook
   }
-  
+
   name       = each.value.name
   experience = each.value.experience
 }
@@ -430,7 +430,7 @@ resource "hw_bread" "json_menu_breads" {
     for sandwich in try(local.json_menu_config.menu.sandwiches, []) :
     sandwich.bread_kind
   ])
-  
+
   kind        = each.value
   description = "Bread for menu item: ${each.value}"
 }
@@ -440,7 +440,7 @@ resource "hw_meat" "json_menu_meats" {
     for sandwich in try(local.json_menu_config.menu.sandwiches, []) :
     sandwich.meat_kind
   ])
-  
+
   kind        = each.value
   description = "Meat for menu item: ${each.value}"
 }
@@ -450,7 +450,7 @@ resource "hw_sandwich" "json_menu_sandwiches" {
     for idx, sandwich in try(local.json_menu_config.menu.sandwiches, []) :
     "sandwich-${idx}" => sandwich
   }
-  
+
   bread_id = hw_bread.json_menu_breads[each.value.bread_kind].id
   meat_id  = hw_meat.json_menu_meats[each.value.meat_kind].id
 }
@@ -474,14 +474,14 @@ locals {
     }
   })
   # Result: JSON string representation
-  
+
   # Encode resource outputs to JSON
   json_encoded_resources = jsonencode({
     bread_ids = [for bread in hw_bread.json_breads : bread.id]
     meat_ids  = [for meat in hw_meat.json_meats : meat.id]
     store_id  = try(hw_store.json_store.id, null)
   })
-  
+
   # Encode for external systems
   json_export_data = jsonencode({
     timestamp = timestamp()
@@ -584,34 +584,34 @@ output "json_resource_examples" {
     bread_count = length(hw_bread.json_breads)
     meat_count  = length(hw_meat.json_meats)
     bread_ids   = [for bread in hw_bread.json_breads : bread.id]
-    meat_ids     = [for meat in hw_meat.json_meats : meat.id]
+    meat_ids    = [for meat in hw_meat.json_meats : meat.id]
   }
 }
 
 output "json_complex_examples" {
   description = "Complex JSON structure examples"
   value = {
-    oven_type     = local.json_oven_type
-    fridge_size   = local.json_fridge_size
-    staff_names   = local.json_staff_names
-    cook_count    = length(hw_cook.json_cooks)
+    oven_type   = local.json_oven_type
+    fridge_size = local.json_fridge_size
+    staff_names = local.json_staff_names
+    cook_count  = length(hw_cook.json_cooks)
   }
 }
 
 output "json_transformation_examples" {
   description = "JSON transformation examples"
   value = {
-    bread_items    = local.json_bread_items
-    total_price    = local.json_total_price
-    unique_types   = local.json_unique_types
+    bread_items  = local.json_bread_items
+    total_price  = local.json_total_price
+    unique_types = local.json_unique_types
   }
 }
 
 output "json_encoding_examples" {
   description = "JSON encoding examples"
   value = {
-    encoded_config     = local.json_encoded_config
-    encoded_resources  = local.json_encoded_resources
+    encoded_config    = local.json_encoded_config
+    encoded_resources = local.json_encoded_resources
   }
-  sensitive = false  # Set to true if contains sensitive data
+  sensitive = false # Set to true if contains sensitive data
 }

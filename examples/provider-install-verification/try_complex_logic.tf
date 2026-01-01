@@ -56,15 +56,15 @@ locals {
   # This demonstrates using try() with calculations as the primary method
   try_complex_average_price = try(
     sum([for s in hw_sandwich.try_complex_sandwiches : s.price]) / length(hw_sandwich.try_complex_sandwiches), # calculate average
-    0 # fallback if no sandwiches
+    0                                                                                                          # fallback if no sandwiches
   )
 
   # Calculate total cost using multiple methods with try()
   # Demonstrates try() with calculation fallbacks
   try_complex_total_cost = try(
     sum([for s in hw_sandwich.try_complex_sandwiches : s.price]), # method 1: sum prices from for_each
-    local.try_complex_total_sandwich_cost,                         # method 2: use calculated total
-    0                                                              # method 3: fallback
+    local.try_complex_total_sandwich_cost,                        # method 2: use calculated total
+    0                                                             # method 3: fallback
   )
 }
 

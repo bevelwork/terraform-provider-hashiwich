@@ -52,7 +52,7 @@ variable "sandwich_bread_type" {
     - Use terraform.tfvars.example as a template
   EOT
   type        = string
-  default     = "rye"  # Sensible default for development
+  default     = "rye" # Sensible default for development
 }
 
 # ============================================================================
@@ -93,7 +93,7 @@ variable "include_drinks" {
     terraform apply -var="include_drinks=false"
   EOT
   type        = bool
-  default     = true  # Default to including drinks
+  default     = true # Default to including drinks
 }
 
 # ============================================================================
@@ -113,7 +113,7 @@ variable "meat_types" {
     export TF_VAR_meat_types='["turkey","ham"]'
   EOT
   type        = list(string)
-  default     = ["turkey", "ham"]  # Default to common meats
+  default     = ["turkey", "ham"] # Default to common meats
 }
 
 # ============================================================================
@@ -133,9 +133,9 @@ variable "store_config" {
     EXAMPLE COMMAND LINE:
     terraform apply -var='store_config={"name"="Main St","max_customers"=30}'
   EOT
-  type = map(string)
+  type        = map(string)
   default = {
-    name         = "Default Store"
+    name          = "Default Store"
     max_customers = "25"
     open_hours    = "8am-6pm"
   }
@@ -199,7 +199,7 @@ variable "api_key" {
   EOT
   type        = string
   sensitive   = true
-  default     = "dev-key-not-for-production"  # Default for local development
+  default     = "dev-key-not-for-production" # Default for local development
 }
 
 # ============================================================================
@@ -225,7 +225,7 @@ variable "sandwich_count" {
   EOT
   type        = number
   default     = 10
-  
+
   validation {
     condition     = var.sandwich_count >= 1 && var.sandwich_count <= 100
     error_message = "Sandwich count must be between 1 and 100."
@@ -249,7 +249,7 @@ variable "custom_description" {
     # Don't include custom_description, will use default
   EOT
   type        = string
-  default     = null  # Nullable - can be omitted
+  default     = null # Nullable - can be omitted
   nullable    = true
 }
 
@@ -360,8 +360,8 @@ output "variable_examples" {
 output "variable_sources" {
   description = "Information about variable sources"
   value = {
-    note = "Variables can be set via: .tfvars files, command line, environment variables, or defaults"
-    current_bread = "Current bread type: ${var.sandwich_bread_type}"
+    note           = "Variables can be set via: .tfvars files, command line, environment variables, or defaults"
+    current_bread  = "Current bread type: ${var.sandwich_bread_type}"
     current_budget = "Current budget: $${var.store_budget}"
   }
 }

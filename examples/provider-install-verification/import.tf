@@ -495,6 +495,6 @@ output "imported_resources_summary" {
   value = {
     imported_count = 1
     resource_type  = "hw_sandwich"
-    note          = "Resources imported and now managed by Terraform"
+    note           = "Resources imported and now managed by Terraform"
   }
 }

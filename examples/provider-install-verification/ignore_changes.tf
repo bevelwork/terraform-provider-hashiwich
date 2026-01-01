@@ -170,8 +170,8 @@ resource "hw_sandwich" "ignore_combined_sandwich" {
   description = "Sandwich with combined lifecycle rules"
 
   lifecycle {
-    prevent_destroy      = true
-    ignore_changes       = [description]
+    prevent_destroy       = true
+    ignore_changes        = [description]
     create_before_destroy = true
     # Multiple rules can be combined:
     # - Cannot be destroyed
@@ -291,19 +291,19 @@ output "ignore_changes_example" {
   description = "Example resources demonstrating ignore_changes"
   value = {
     single_ignore = {
-      bread_id     = hw_bread.ignore_single_bread.id
-      description  = hw_bread.ignore_single_bread.description
-      note         = "Description changes are ignored"
+      bread_id    = hw_bread.ignore_single_bread.id
+      description = hw_bread.ignore_single_bread.description
+      note        = "Description changes are ignored"
     }
     all_ignore = {
-      bread_id     = hw_bread.ignore_all_bread.id
-      description  = hw_bread.ignore_all_bread.description
-      note         = "All changes are ignored after creation"
+      bread_id    = hw_bread.ignore_all_bread.id
+      description = hw_bread.ignore_all_bread.description
+      note        = "All changes are ignored after creation"
     }
     combined = {
-      sandwich_id  = hw_sandwich.ignore_combined_sandwich.id
-      description  = hw_sandwich.ignore_combined_sandwich.description
-      note         = "Combined with prevent_destroy and create_before_destroy"
+      sandwich_id = hw_sandwich.ignore_combined_sandwich.id
+      description = hw_sandwich.ignore_combined_sandwich.description
+      note        = "Combined with prevent_destroy and create_before_destroy"
     }
   }
 }

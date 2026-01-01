@@ -137,9 +137,9 @@ resource "hw_meat" "flatten_group_meat" {
 }
 
 resource "hw_sandwich" "flatten_group_sandwiches" {
-  for_each = hw_bread.flatten_group_bread
-  bread_id = each.value.id
-  meat_id = hw_meat.flatten_group_meat[each.key].id
+  for_each    = hw_bread.flatten_group_bread
+  bread_id    = each.value.id
+  meat_id     = hw_meat.flatten_group_meat[each.key].id
   description = "Sandwich for group ${each.key}"
 }
 
@@ -293,9 +293,9 @@ locals {
   # Lists with some empty sublists
   flatten_mixed_lists = [
     ["item_1", "item_2"],
-    [],  # Empty list
+    [], # Empty list
     ["item_3"],
-    [],  # Another empty list
+    [], # Another empty list
     ["item_4", "item_5", "item_6"]
   ]
 
@@ -314,8 +314,8 @@ locals {
 locals {
   # Nested price lists from different categories
   flatten_price_categories = [
-    [5.00, 5.00, 5.00],  # Sandwich prices
-    [2.50, 2.50],        # Soup prices
+    [5.00, 5.00, 5.00], # Sandwich prices
+    [2.50, 2.50],       # Soup prices
     [1.00, 1.00, 1.00]  # Drink prices
   ]
 

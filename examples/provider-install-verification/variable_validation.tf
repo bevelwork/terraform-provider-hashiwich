@@ -35,7 +35,7 @@ variable "store_name" {
   EOT
   type        = string
   default     = "My Sandwich Shop"
-  
+
   validation {
     condition     = length(var.store_name) >= 3 && length(var.store_name) <= 50
     error_message = "Store name must be between 3 and 50 characters long."
@@ -65,7 +65,7 @@ variable "store_id" {
   EOT
   type        = string
   default     = "STO-0001"
-  
+
   validation {
     condition     = can(regex("^[A-Z]{3}-[0-9]{4}$", var.store_id))
     error_message = "Store ID must be in format AAA-1234 (3 uppercase letters, dash, 4 digits)."
@@ -93,7 +93,7 @@ variable "bread_type" {
   EOT
   type        = string
   default     = "rye"
-  
+
   validation {
     condition     = contains(["rye", "sourdough", "wheat", "ciabatta", "white", "multigrain"], var.bread_type)
     error_message = "Bread type must be one of: rye, sourdough, wheat, ciabatta, white, multigrain."
@@ -124,7 +124,7 @@ variable "sandwich_price" {
   EOT
   type        = number
   default     = 5.00
-  
+
   validation {
     condition     = var.sandwich_price >= 1.00 && var.sandwich_price <= 20.00
     error_message = "Sandwich price must be between $1.00 and $20.00."
@@ -154,7 +154,7 @@ variable "table_count" {
   EOT
   type        = number
   default     = 10
-  
+
   validation {
     condition     = var.table_count >= 1 && floor(var.table_count) == var.table_count
     error_message = "Table count must be a positive integer (1 or greater)."
@@ -183,7 +183,7 @@ variable "meat_selections" {
   EOT
   type        = list(string)
   default     = ["turkey", "ham"]
-  
+
   validation {
     condition     = length(var.meat_selections) >= 1 && length(var.meat_selections) <= 10
     error_message = "Meat selections must contain between 1 and 10 items."
@@ -212,7 +212,7 @@ variable "store_locations" {
   EOT
   type        = list(string)
   default     = ["NY", "CA"]
-  
+
   validation {
     condition = alltrue([
       for loc in var.store_locations : can(regex("^[A-Z]{2}$", loc))
@@ -239,11 +239,11 @@ variable "store_configs" {
     - { "STO-1" = "Downtown" } (not 4 digits)
   EOT
   type        = map(string)
-  default     = {
+  default = {
     "STO-0001" = "Downtown Location"
     "STO-0002" = "Uptown Location"
   }
-  
+
   validation {
     condition = alltrue([
       for key in keys(var.store_configs) : can(regex("^STO-[0-9]{4}$", key))
@@ -282,17 +282,17 @@ variable "sandwich_spec" {
     price      = 5.00
     quantity   = 1
   }
-  
+
   validation {
     condition     = contains(["rye", "sourdough", "wheat", "ciabatta", "white", "multigrain"], var.sandwich_spec.bread_type)
     error_message = "bread_type must be one of: rye, sourdough, wheat, ciabatta, white, multigrain."
   }
-  
+
   validation {
     condition     = var.sandwich_spec.price >= 1.00 && var.sandwich_spec.price <= 20.00
     error_message = "price must be between $1.00 and $20.00."
   }
-  
+
   validation {
     condition     = var.sandwich_spec.quantity >= 1 && floor(var.sandwich_spec.quantity) == var.sandwich_spec.quantity
     error_message = "quantity must be a positive integer."
@@ -322,19 +322,19 @@ variable "email_address" {
   EOT
   type        = string
   default     = "admin@example.com"
-  
+
   # Validation 1: Must contain @
   validation {
     condition     = can(regex("@", var.email_address))
     error_message = "Email address must contain an @ symbol."
   }
-  
+
   # Validation 2: Minimum length
   validation {
     condition     = length(var.email_address) >= 5
     error_message = "Email address must be at least 5 characters long."
   }
-  
+
   # Validation 3: Must have valid domain format
   validation {
     condition     = can(regex("^[^@]+@[^@]+\\.[^@]+$", var.email_address))
@@ -371,24 +371,22 @@ variable "discount_config" {
     discount_type  = "percentage"
     discount_value = 10
   }
-  
+
   # Validate discount_type
   validation {
     condition     = contains(["percentage", "fixed"], var.discount_config.discount_type)
     error_message = "discount_type must be either 'percentage' or 'fixed'."
   }
-  
+
   # Conditional validation: percentage must be 0-100
   validation {
-    condition = var.discount_config.discount_type != "percentage" || 
-              (var.discount_config.discount_value >= 0 && var.discount_config.discount_value <= 100)
+    condition     = var.discount_config.discount_type != "percentage" || (var.discount_config.discount_value >= 0 && var.discount_config.discount_value <= 100)
     error_message = "When discount_type is 'percentage', discount_value must be between 0 and 100."
   }
-  
+
   # Conditional validation: fixed must be positive
   validation {
-    condition = var.discount_config.discount_type != "fixed" || 
-                var.discount_config.discount_value > 0
+    condition     = var.discount_config.discount_type != "fixed" || var.discount_config.discount_value > 0
     error_message = "When discount_type is 'fixed', discount_value must be greater than 0."
   }
 }
@@ -411,7 +409,7 @@ variable "enable_premium_features" {
   EOT
   type        = bool
   default     = false
-  
+
   # Note: Booleans are already type-validated, but this shows the pattern
   validation {
     condition     = var.enable_premium_features == true || var.enable_premium_features == false
@@ -443,10 +441,9 @@ variable "phone_number" {
   EOT
   type        = string
   default     = "(555) 123-4567"
-  
+
   validation {
-    condition = can(regex("^\\([0-9]{3}\\) [0-9]{3}-[0-9]{4}$", var.phone_number)) ||
-                can(regex("^[0-9]{3}-[0-9]{3}-[0-9]{4}$", var.phone_number))
+    condition     = can(regex("^\\([0-9]{3}\\) [0-9]{3}-[0-9]{4}$", var.phone_number)) || can(regex("^[0-9]{3}-[0-9]{3}-[0-9]{4}$", var.phone_number))
     error_message = "Phone number must be in format (XXX) XXX-XXXX or XXX-XXX-XXXX."
   }
 }
@@ -481,19 +478,19 @@ variable "menu_items" {
       price = 5.00
     }
   ]
-  
+
   validation {
     condition     = length(var.menu_items) >= 1
     error_message = "Menu items list must contain at least one item."
   }
-  
+
   validation {
     condition = alltrue([
       for item in var.menu_items : length(item.name) > 0
     ])
     error_message = "All menu items must have a non-empty name."
   }
-  
+
   validation {
     condition = alltrue([
       for item in var.menu_items : item.price >= 0.50 && item.price <= 50.00
@@ -529,10 +526,9 @@ variable "optional_config" {
   default = {
     timeout = 30
   }
-  
+
   validation {
-    condition = try(var.optional_config.timeout, 30) >= 1 && 
-                try(var.optional_config.timeout, 30) <= 300
+    condition     = try(var.optional_config.timeout, 30) >= 1 && try(var.optional_config.timeout, 30) <= 300
     error_message = "If provided, timeout must be between 1 and 300 seconds."
   }
 }
@@ -561,27 +557,27 @@ resource "hw_meat" "validated_meat" {
 output "validation_examples" {
   description = "Examples of validated variables"
   value = {
-    store_name        = var.store_name
-    store_id          = var.store_id
-    bread_type        = var.bread_type
-    sandwich_price    = var.sandwich_price
-    table_count       = var.table_count
-    meat_selections   = var.meat_selections
-    store_locations   = var.store_locations
-    store_configs     = var.store_configs
-    sandwich_spec     = var.sandwich_spec
-    email_address     = var.email_address
-    discount_config   = var.discount_config
-    phone_number      = var.phone_number
-    menu_items        = var.menu_items
+    store_name      = var.store_name
+    store_id        = var.store_id
+    bread_type      = var.bread_type
+    sandwich_price  = var.sandwich_price
+    table_count     = var.table_count
+    meat_selections = var.meat_selections
+    store_locations = var.store_locations
+    store_configs   = var.store_configs
+    sandwich_spec   = var.sandwich_spec
+    email_address   = var.email_address
+    discount_config = var.discount_config
+    phone_number    = var.phone_number
+    menu_items      = var.menu_items
   }
 }
 
 output "validation_info" {
   description = "Information about variable validation"
   value = {
-    note = "All variables above have validation rules. Try setting invalid values to see validation errors."
+    note            = "All variables above have validation rules. Try setting invalid values to see validation errors."
     example_command = "terraform apply -var='sandwich_price=25.00'"
-    example_error = "This will fail validation: sandwich_price must be between $1.00 and $20.00"
+    example_error   = "This will fail validation: sandwich_price must be between $1.00 and $20.00"
   }
 }

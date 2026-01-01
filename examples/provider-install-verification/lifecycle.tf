@@ -60,7 +60,7 @@ resource "hw_meat" "lifecycle_manual_meat" {
 resource "hw_sandwich" "lifecycle_manual_sandwich" {
   bread_id    = hw_bread.lifecycle_manual_bread.id
   meat_id     = hw_meat.lifecycle_manual_meat.id
-  description  = "Sandwich with ignored description"
+  description = "Sandwich with ignored description"
 
   lifecycle {
     ignore_changes = [description]
@@ -185,8 +185,8 @@ resource "hw_sandwich" "lifecycle_combined_sandwich" {
   description = "Sandwich with combined lifecycle rules - protected and flexible"
 
   lifecycle {
-    prevent_destroy = true
-    ignore_changes  = [description]
+    prevent_destroy       = true
+    ignore_changes        = [description]
     create_before_destroy = true
     # Multiple rules can be combined:
     # - Cannot be destroyed

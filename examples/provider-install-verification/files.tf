@@ -23,23 +23,23 @@ locals {
   # Syntax: file(path)
   # Path is relative to the Terraform configuration directory
   # NOTE: file() will fail if the file doesn't exist - use try() for optional files
-  
+
   # Basic file read (wrapped in try() for safety - will use default if file missing)
   # In production, you might use: file("${path.module}/config/bread-config.txt")
   # But that will fail if file doesn't exist, so we use try() here
   files_basic_read = try(file("${path.module}/config/bread-config.txt"), "File not found - this is a default value")
   # Result: Contents of bread-config.txt as a string, or default if file missing
-  
+
   # Reading JSON file (safe with try())
   files_json_content = try(file("${path.module}/config/store-settings.json"), "{}")
   # Result: JSON content as string (use jsondecode() to parse), or "{}" if file missing
-  
+
   # Reading with path.module (current module directory)
   files_module_path_read = try(file("${path.module}/config/meat-config.txt"), "Default meat config")
-  
+
   # Reading with path.root (root module directory)
   files_root_path_read = try(file("${path.root}/config/bread-config.txt"), "Default bread config")
-  
+
   # Reading with path.cwd (current working directory)
   files_cwd_path_read = try(file("${path.cwd}/config/bread-config.txt"), "Default config")
 }
@@ -52,22 +52,22 @@ locals {
 locals {
   # try(): Attempt to read file, return default if it fails
   # This prevents Terraform from failing if the file doesn't exist
-  
+
   # Safe file read with default empty string
   files_safe_read_1 = try(file("${path.module}/config/optional-config.txt"), "")
   # Result: File contents if exists, empty string if not
-  
+
   # Safe file read with custom default
   files_safe_read_2 = try(file("${path.module}/config/optional-config.txt"), "default-config-value")
   # Result: File contents if exists, "default-config-value" if not
-  
+
   # Safe file read with default from another file
   files_safe_read_3 = try(
     file("${path.module}/config/optional-config.txt"),
     try(file("${path.module}/config/default-config.txt"), "default-value")
   )
   # Result: optional-config.txt if exists, otherwise default-config.txt, otherwise "default-value"
-  
+
   # Safe file read with conditional default
   files_safe_read_4 = try(
     file("${path.module}/config/environment-specific.txt"),
@@ -97,7 +97,7 @@ resource "hw_meat" "file_meat_1" {
 
 # Example: Multiple fallbacks
 resource "hw_bread" "file_bread_2" {
-  kind        = "sourdough"
+  kind = "sourdough"
   description = try(
     file("${path.module}/config/bread-description.txt"),
     try(file("${path.module}/config/default-description.txt"), "Standard bread description")
@@ -114,15 +114,15 @@ locals {
   # Read JSON file and parse it
   files_json_raw = try(file("${path.module}/config/store-settings.json"), "{}")
   # Get file content, default to empty JSON object string
-  
+
   files_json_parsed = jsondecode(local.files_json_raw)
   # Parse JSON string into Terraform object
   # Result: Object with keys/values from JSON
-  
+
   # Access JSON properties safely
-  files_store_name = try(local.files_json_parsed.store_name, "Default Store")
+  files_store_name     = try(local.files_json_parsed.store_name, "Default Store")
   files_store_capacity = try(local.files_json_parsed.capacity, 50)
-  
+
   # Safe JSON read with full fallback
   files_safe_json = try(
     jsondecode(file("${path.module}/config/store-settings.json")),
@@ -148,7 +148,7 @@ locals {
     try(file("${path.module}/config/config3.txt"), "")
   ]
   # List of file contents, empty strings for missing files
-  
+
   # Combine file contents
   files_combined_content = join("\n", [
     try(file("${path.module}/config/header.txt"), "# Header"),
@@ -156,7 +156,7 @@ locals {
     try(file("${path.module}/config/footer.txt"), "# Footer")
   ])
   # Combines multiple files with newlines, defaults for missing files
-  
+
   # Read files conditionally
   files_conditional_read = var.environment == "production" ? try(file("${path.module}/config/prod-config.txt"), "") : try(file("${path.module}/config/dev-config.txt"), "")
   # Reads different files based on variable
@@ -174,28 +174,28 @@ locals {
     try(file("${path.module}/config/default.txt"), "fallback-value")
   )
   # Tries environment-specific file, then default, then fallback
-  
+
   # Pattern 2: Feature flags from file
   files_feature_enabled = try(
     file("${path.module}/config/features.txt"),
     "disabled"
   ) != "disabled"
   # Reads feature file, checks if not "disabled"
-  
+
   # Pattern 3: Template file with defaults
   files_template = try(
     file("${path.module}/templates/resource-template.txt"),
     "resource \"hw_bread\" \"example\" {\n  kind = \"rye\"\n}"
   )
   # Uses template file if exists, otherwise inline template
-  
+
   # Pattern 4: Version from file
   files_version = try(
     trimspace(file("${path.module}/VERSION")),
     "1.0.0"
   )
   # Reads version file, trims whitespace, defaults to "1.0.0"
-  
+
   # Pattern 5: Secrets from file (with warning about security)
   files_secret = try(
     file("${path.module}/secrets/api-key.txt"),
@@ -214,11 +214,11 @@ locals {
   # Strategy 1: Silent failure with default
   files_strategy_1 = try(file("${path.module}/config/optional.txt"), "default")
   # Simple and clean, always returns a value
-  
+
   # Strategy 2: Fail fast (no try)
   # files_strategy_2 = file("${path.module}/config/required.txt")
   # Will fail immediately if file doesn't exist - use for required files
-  
+
   # Strategy 3: Multiple fallback files
   files_strategy_3 = try(
     file("${path.module}/config/primary.txt"),
@@ -227,7 +227,7 @@ locals {
     "final-fallback"
   )
   # Tries multiple files in order
-  
+
   # Strategy 4: Conditional file reading
   files_strategy_4 = var.environment == "production" ? try(file("${path.module}/config/custom.txt"), try(file("${path.module}/config/default.txt"), "default-value")) : try(file("${path.module}/config/default.txt"), "default-value")
   # Reads different files based on environment variable
@@ -250,19 +250,19 @@ locals {
     file("${path.module}/config/${var.environment}.txt"),
     ""
   )
-  
+
   # Validate that content is not empty
   files_is_valid = local.files_validated_content != ""
-  
+
   # Use validated content or error
   files_safe_validated = local.files_is_valid ? local.files_validated_content : "Configuration file is missing or empty"
-  
+
   # Validate JSON structure
   files_validated_json = try(
     jsondecode(file("${path.module}/config/settings.json")),
     null
   )
-  
+
   files_has_required_fields = local.files_validated_json != null && try(local.files_validated_json.store_name, null) != null && try(local.files_validated_json.capacity, null) != null
 }
 
@@ -293,7 +293,7 @@ resource "hw_cook" "file_cook" {
 
 resource "hw_tables" "file_tables" {
   quantity = try(tonumber(trimspace(file("${path.module}/config/table-count.txt"))), 10)
-  size    = "medium"
+  size     = "medium"
 }
 
 resource "hw_chairs" "file_chairs" {
@@ -307,7 +307,7 @@ resource "hw_fridge" "file_fridge" {
 
 # Example 2: Read description from markdown file
 resource "hw_bread" "file_bread_markdown" {
-  kind        = "ciabatta"
+  kind = "ciabatta"
   description = try(
     file("${path.module}/docs/bread-description.md"),
     "Fresh ciabatta bread"
@@ -320,7 +320,7 @@ locals {
     file("${path.module}/config/items.txt"),
     "item1\nitem2\nitem3"
   )
-  
+
   files_item_list = split("\n", local.files_item_list_raw)
   # Splits file content by newlines into list
 }
@@ -334,20 +334,20 @@ locals {
   # path.module: Directory containing the current module
   files_module_path = path.module
   # Example: /home/user/project/modules/my-module
-  
+
   # path.root: Root module directory
   files_root_path = path.root
   # Example: /home/user/project
-  
+
   # path.cwd: Current working directory (where terraform was run)
   files_cwd_path_example = path.cwd
   # Example: /home/user/project/examples
-  
+
   # Using paths in file() calls (wrapped in try() for safety)
   files_relative_to_module = try(file("${path.module}/config.txt"), "default")
   files_relative_to_root   = try(file("${path.root}/config.txt"), "default")
   files_relative_to_cwd    = try(file("${path.cwd}/config.txt"), "default")
-  
+
   # Absolute paths (use with caution)
   # files_absolute = file("/etc/config.txt")  # Not recommended
 }
@@ -431,16 +431,16 @@ output "files_basic_examples" {
     safe_read_default = local.files_safe_read_1
     safe_read_custom  = local.files_safe_read_2
   }
-  sensitive = true  # May contain file contents
+  sensitive = true # May contain file contents
 }
 
 output "files_json_examples" {
   description = "JSON file reading examples"
   value = {
-    parsed_json     = local.files_json_parsed
-    safe_json       = local.files_safe_json
-    store_name      = local.files_store_name
-    store_capacity  = local.files_store_capacity
+    parsed_json    = local.files_json_parsed
+    safe_json      = local.files_safe_json
+    store_name     = local.files_store_name
+    store_capacity = local.files_store_capacity
   }
 }
 
@@ -456,8 +456,8 @@ output "files_path_examples" {
 output "files_pattern_examples" {
   description = "Common file reading patterns"
   value = {
-    env_config      = local.files_env_config
-    version         = local.files_version
+    env_config       = local.files_env_config
+    version          = local.files_version
     combined_content = local.files_combined_content
   }
   sensitive = true
@@ -466,7 +466,7 @@ output "files_pattern_examples" {
 output "files_validation_examples" {
   description = "File validation examples"
   value = {
-    is_valid           = local.files_is_valid
+    is_valid            = local.files_is_valid
     has_required_fields = local.files_has_required_fields
   }
 }

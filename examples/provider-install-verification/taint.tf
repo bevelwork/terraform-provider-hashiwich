@@ -174,9 +174,9 @@ resource "hw_sandwich" "taint_dependent_sandwich" {
 # Taint multiple resources at once
 
 resource "hw_sandwich" "taint_multiple_sandwiches" {
-  for_each = toset(["turkey", "ham", "roast beef"])
-  bread_id = hw_bread.taint_example_bread.id
-  meat_id  = hw_meat.taint_example_meat.id
+  for_each    = toset(["turkey", "ham", "roast beef"])
+  bread_id    = hw_bread.taint_example_bread.id
+  meat_id     = hw_meat.taint_example_meat.id
   description = "Sandwich ${each.value}"
 }
 
@@ -427,9 +427,9 @@ output "taint_example_sandwich_id" {
 output "taint_workflow_note" {
   description = "Note about taint workflow"
   value = {
-    message = "Taint resources to force recreation"
+    message       = "Taint resources to force recreation"
     method_modern = "terraform apply -replace=<resource>"
     method_legacy = "terraform taint <resource>"
-    note = "Use -replace for modern Terraform versions"
+    note          = "Use -replace for modern Terraform versions"
   }
 }
