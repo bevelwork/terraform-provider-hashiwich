@@ -43,6 +43,8 @@ resource "hw_meat" "splat_meat_3" {
 # Scenario 1: Splat with for_each Resources
 # ============================================================================
 # Most common use case: Get all IDs from resources created with for_each
+# IMPORTANT: For for_each resources, you must use values() to convert the map to a list first
+# Syntax: values(resource)[*].attribute (NOT resource[*].attribute)
 
 resource "hw_meat" "splat_for_each_meats" {
   for_each = toset(["turkey", "ham", "roast beef", "chicken", "pastrami"])
@@ -51,7 +53,8 @@ resource "hw_meat" "splat_for_each_meats" {
 
 locals {
   # Splat operator: Get all IDs from for_each resources
-  all_meat_ids_splat = hw_meat.splat_for_each_meats[*].id
+  # NOTE: For for_each resources, use values() to convert map to list first
+  all_meat_ids_splat = values(hw_meat.splat_for_each_meats)[*].id
   # Result: ["meat-turkey-6", "meat-ham-3", "meat-roast beef-10", ...]
   
   # Equivalent for expression (more verbose):
@@ -59,11 +62,11 @@ locals {
     for meat in hw_meat.splat_for_each_meats : meat.id
   ]
   
-  # Splat: Get all kinds
-  all_meat_kinds = hw_meat.splat_for_each_meats[*].kind
+  # Splat: Get all kinds (use values() for for_each resources)
+  all_meat_kinds = values(hw_meat.splat_for_each_meats)[*].kind
   
-  # Splat: Get all descriptions
-  all_meat_descriptions = hw_meat.splat_for_each_meats[*].description
+  # Splat: Get all descriptions (use values() for for_each resources)
+  all_meat_descriptions = values(hw_meat.splat_for_each_meats)[*].description
 }
 
 # ============================================================================
@@ -228,17 +231,18 @@ resource "hw_sandwich" "splat_sandwiches" {
 
 locals {
   # Splat: Get all prices (computed attribute)
-  splat_all_sandwich_prices = hw_sandwich.splat_sandwiches[*].price
+  # NOTE: For for_each resources, use values() to convert map to list first
+  splat_all_sandwich_prices = values(hw_sandwich.splat_sandwiches)[*].price
   # Result: [5.00, 5.00, 5.00, ...] (all prices)
   
-  # Splat: Get all IDs
-  splat_all_sandwich_ids = hw_sandwich.splat_sandwiches[*].id
+  # Splat: Get all IDs (use values() for for_each resources)
+  splat_all_sandwich_ids = values(hw_sandwich.splat_sandwiches)[*].id
   
-  # Calculate total cost using splat
-  splat_total_sandwich_cost = sum(hw_sandwich.splat_sandwiches[*].price)
+  # Calculate total cost using splat (use values() for for_each resources)
+  splat_total_sandwich_cost = sum(values(hw_sandwich.splat_sandwiches)[*].price)
   
-  # Get average price
-  splat_average_sandwich_price = sum(hw_sandwich.splat_sandwiches[*].price) / length(hw_sandwich.splat_sandwiches[*].price)
+  # Get average price (use values() for for_each resources)
+  splat_average_sandwich_price = sum(values(hw_sandwich.splat_sandwiches)[*].price) / length(values(hw_sandwich.splat_sandwiches)[*].price)
 }
 
 # ============================================================================
@@ -249,7 +253,8 @@ locals {
 
 locals {
   # Use SPLAT when: Just extracting a single attribute
-  simple_extraction_splat = hw_meat.splat_for_each_meats[*].id
+  # NOTE: For for_each resources, use values() first
+  simple_extraction_splat = values(hw_meat.splat_for_each_meats)[*].id
   # Clean and readable
   
   # Use FOR when: Need filtering, transformation, or complex logic
@@ -294,28 +299,32 @@ locals {
 
 # Use Case 1: Get all resource IDs for a bag
 resource "hw_bag" "splat_bag" {
-  sandwiches = hw_sandwich.splat_sandwiches[*].id
-  # Splat gets all sandwich IDs to put in the bag
+  sandwiches = values(hw_sandwich.splat_sandwiches)[*].id
+  # Splat gets all sandwich IDs to put in the bag (use values() for for_each resources)
 }
 
 # Use Case 2: Calculate totals
 locals {
-  # Total cost of all sandwiches
-  splat_total_cost = sum(hw_sandwich.splat_sandwiches[*].price)
+  # Total cost of all sandwiches (use values() for for_each resources)
+  splat_total_cost = sum(values(hw_sandwich.splat_sandwiches)[*].price)
   
-  # Count of all breads
+  # Count of all breads (count resources work directly with splat)
   splat_bread_count = length(hw_bread.splat_count_breads[*].id)
   
-  # All unique bread kinds
+  # All unique bread kinds (count resources work directly with splat)
   splat_unique_bread_kinds = toset(hw_bread.splat_count_breads[*].kind)
 }
 
 # Use Case 3: Create dependent resources
+# NOTE: Using splat with for_each requires the values to be known at plan time
+# For count resources, we can use splat directly, but need to be careful with for_each
 resource "hw_sandwich" "splat_dependent" {
-  for_each = toset(hw_bread.splat_count_breads[*].id)
+  for_each = {
+    for idx, bread_id in hw_bread.splat_count_breads[*].id : "bread-${idx}" => bread_id
+  }
   bread_id = each.value
   meat_id  = hw_meat.splat_meat_1.id
-  # Creates a sandwich for each bread using splat
+  # Creates a sandwich for each bread using splat (with static keys for for_each)
 }
 
 # ============================================================================
@@ -323,23 +332,23 @@ resource "hw_sandwich" "splat_dependent" {
 # ============================================================================
 
 locals {
-  # Pattern 1: Get all IDs
-  pattern_all_ids = hw_meat.splat_for_each_meats[*].id
+  # Pattern 1: Get all IDs (use values() for for_each resources)
+  pattern_all_ids = values(hw_meat.splat_for_each_meats)[*].id
   
-  # Pattern 2: Get all of a specific attribute
-  pattern_all_kinds = hw_meat.splat_for_each_meats[*].kind
+  # Pattern 2: Get all of a specific attribute (use values() for for_each resources)
+  pattern_all_kinds = values(hw_meat.splat_for_each_meats)[*].kind
   
-  # Pattern 3: Use in functions
-  pattern_sum_prices = sum(hw_sandwich.splat_sandwiches[*].price)
-  pattern_max_price  = max(hw_sandwich.splat_sandwiches[*].price...)
-  pattern_min_price  = min(hw_sandwich.splat_sandwiches[*].price...)
+  # Pattern 3: Use in functions (use values() for for_each resources)
+  pattern_sum_prices = sum(values(hw_sandwich.splat_sandwiches)[*].price)
+  pattern_max_price  = max(values(hw_sandwich.splat_sandwiches)[*].price...)
+  pattern_min_price  = min(values(hw_sandwich.splat_sandwiches)[*].price...)
   
-  # Pattern 4: Convert to set
+  # Pattern 4: Convert to set (count resources work directly)
   pattern_to_set = toset(hw_bread.splat_count_breads[*].kind)
   
-  # Pattern 5: Use in conditionals
+  # Pattern 5: Use in conditionals (use values() for for_each resources)
   pattern_any_has_price = length([
-    for price in hw_sandwich.splat_sandwiches[*].price : price
+    for price in values(hw_sandwich.splat_sandwiches)[*].price : price
     if price > 4.00
   ]) > 0
 }
@@ -389,8 +398,8 @@ locals {
 output "splat_for_each_examples" {
   description = "Splat examples with for_each resources"
   value = {
-    all_meat_ids        = hw_meat.splat_for_each_meats[*].id
-    all_meat_kinds      = hw_meat.splat_for_each_meats[*].kind
+    all_meat_ids        = values(hw_meat.splat_for_each_meats)[*].id
+    all_meat_kinds      = values(hw_meat.splat_for_each_meats)[*].kind
     equivalent_for_expr = local.all_meat_ids_for
   }
 }
@@ -423,7 +432,7 @@ output "splat_map_examples" {
 output "splat_computed_examples" {
   description = "Splat examples with computed attributes"
   value = {
-    all_prices        = hw_sandwich.splat_sandwiches[*].price
+    all_prices        = values(hw_sandwich.splat_sandwiches)[*].price
     total_cost        = local.splat_total_sandwich_cost
     average_price     = local.splat_average_sandwich_price
   }

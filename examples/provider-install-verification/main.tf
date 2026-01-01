@@ -4,10 +4,10 @@ terraform {
       source = "registry.terraform.io/bevelwork/hashiwich"
       # version = "~> 1.0"  # Commented out for local development with dev_overrides
     }
-    # random = {
-    #   source  = "hashicorp/random"
-    #   # version = "~> 3.0"  # Commented out for local development - will use latest available
-    # }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.0"
+    }
   }
   required_version = ">= 1"
 }
