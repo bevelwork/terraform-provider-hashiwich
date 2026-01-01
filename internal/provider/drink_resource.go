@@ -49,24 +49,129 @@ func (r *DrinkResource) Metadata(ctx context.Context, req resource.MetadataReque
 
 func (r *DrinkResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Mock drink resource for instructional purposes",
+		MarkdownDescription: `The ` + "`hw_drink`" + ` resource represents a beverage available in the sandwich shop.
+
+This resource demonstrates **nested blocks** in Terraform through the optional ` + "`ice`" + ` block, which allows configuring ice preferences. The ice block is a list that can contain multiple ice configuration objects, making it ideal for learning about ` + "`dynamic`" + ` blocks.
+
+**Example Usage:**
+
+` + "```hcl" + `
+# Simple drink without ice configuration
+resource "hw_drink" "cola" {
+  kind        = "cola"
+  description = "Classic cola"
+}
+
+# Drink with ice configuration using nested blocks
+resource "hw_drink" "soda_with_ice" {
+  kind        = "soda"
+  description = "Soda with ice"
+  
+  ice {
+    some = true
+  }
+}
+
+# Multiple ice blocks (demonstrates list blocks)
+resource "hw_drink" "soda_multiple_ice" {
+  kind = "soda"
+  
+  ice {
+    some = true
+  }
+  
+  ice {
+    lots = true
+  }
+}
+` + "```" + `
+
+**Common Drink Types:**
+- ` + "`cola`" + `, ` + "`soda`" + `, ` + "`juice`" + `, ` + "`water`" + `, ` + "`lemonade`" + `
+
+**Learning Concepts:**
+- **Nested Blocks**: The ` + "`ice`" + ` block demonstrates how to use nested configuration blocks
+- **Dynamic Blocks**: Use ` + "`dynamic`" + ` blocks to conditionally create ice configurations
+- **List Blocks**: The ice block is a list, allowing multiple ice configurations`,
 
 		Attributes: map[string]schema.Attribute{
 			"description": schema.StringAttribute{
-				MarkdownDescription: "A description of the drink resource",
-				Optional:            true,
+				MarkdownDescription: `Optional human-readable description of the drink resource.
+
+**Type:** ` + "`string`" + ` (optional)
+
+**Example:**
+` + "```hcl" + `
+description = "Refreshing cola beverage"
+` + "```" + `
+
+**Best Practices:**
+- Use descriptive text that helps understand the drink's purpose
+- Can be used in outputs or documentation
+- Does not affect resource behavior or pricing`,
+				Optional: true,
 			},
 			"kind": schema.StringAttribute{
-				MarkdownDescription: "The kind of pop/soda",
-				Required:            true,
+				MarkdownDescription: `The type or variety of beverage. This is a required field that identifies what kind of drink this resource represents.
+
+**Type:** ` + "`string`" + ` (required)
+
+**Examples:**
+` + "```hcl" + `
+kind = "cola"
+kind = "soda"
+kind = "juice"
+kind = "water"
+` + "```" + `
+
+**Common Values:**
+- ` + "`cola`" + `, ` + "`soda`" + `, ` + "`juice`" + `, ` + "`water`" + `, ` + "`lemonade`" + `, ` + "`iced tea`" + `
+
+**Important Notes:**
+- This value is used to generate the resource ID
+- Changing this value will cause the resource to be recreated (new ID generated)
+- The value is case-sensitive
+- Any string value is accepted`,
+				Required: true,
 			},
 			"price": schema.NumberAttribute{
 				Computed:            true,
-				MarkdownDescription: "The price of the drink in dollars (hardcoded to $1.00)",
+				MarkdownDescription: `The price of the drink in dollars. This is a computed value that includes the base price plus any provider-level upcharge.
+
+**Type:** ` + "`number`" + ` (computed, read-only)
+
+**Base Price:** $1.00
+
+**Pricing Logic:**
+- Base price: $1.00 (fixed for all drinks)
+- Provider upcharge: Added if ` + "`upcharge`" + ` is configured in the provider block
+- Final price = $1.00 + upcharge amount
+
+**Example Values:**
+- Without upcharge: ` + "`1.00`" + `
+- With upcharge of $0.50: ` + "`1.50`" + `
+
+**Important Notes:**
+- This value is automatically computed and cannot be set manually
+- The price is the same for all drinks regardless of kind or ice configuration
+- Use this in outputs or calculations for total order costs`,
 			},
 			"id": schema.StringAttribute{
 				Computed:            true,
-				MarkdownDescription: "Drink identifier",
+				MarkdownDescription: `Automatically generated unique identifier for this drink resource.
+
+**Type:** ` + "`string`" + ` (computed, read-only)
+
+**Format:** ` + "`drink-{kind}-{length}`" + `
+
+**Example Values:**
+- ` + "`drink-cola-4`" + ` (for kind = "cola")
+- ` + "`drink-soda-4`" + ` (for kind = "soda")
+
+**Important Notes:**
+- This value is automatically computed and cannot be set manually
+- The ID is stable and will not change unless the ` + "`kind`" + ` attribute changes
+- Use this ID to reference the drink in other resources or outputs`,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
@@ -77,20 +182,96 @@ func (r *DrinkResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 				NestedObject: schema.NestedBlockObject{
 					Attributes: map[string]schema.Attribute{
 						"some": schema.BoolAttribute{
-							MarkdownDescription: "Some ice",
-							Optional:            true,
+							MarkdownDescription: `Set to ` + "`true`" + ` to request some ice in the drink.
+
+**Type:** ` + "`bool`" + ` (optional)
+
+**Example:**
+` + "```hcl" + `
+ice {
+  some = true
+}
+` + "```" + `
+
+**Note:** Only one of ` + "`some`" + `, ` + "`lots`" + `, or ` + "`max`" + ` should be set to ` + "`true`" + `, though the provider does not enforce this.`,
+							Optional: true,
 						},
 						"lots": schema.BoolAttribute{
-							MarkdownDescription: "Lots of ice",
-							Optional:            true,
+							MarkdownDescription: `Set to ` + "`true`" + ` to request lots of ice in the drink.
+
+**Type:** ` + "`bool`" + ` (optional)
+
+**Example:**
+` + "```hcl" + `
+ice {
+  lots = true
+}
+` + "```" + `
+
+**Note:** Only one of ` + "`some`" + `, ` + "`lots`" + `, or ` + "`max`" + ` should be set to ` + "`true`" + `, though the provider does not enforce this.`,
+							Optional: true,
 						},
 						"max": schema.BoolAttribute{
-							MarkdownDescription: "Maximum ice",
-							Optional:            true,
+							MarkdownDescription: `Set to ` + "`true`" + ` to request maximum ice in the drink.
+
+**Type:** ` + "`bool`" + ` (optional)
+
+**Example:**
+` + "```hcl" + `
+ice {
+  max = true
+}
+` + "```" + `
+
+**Note:** Only one of ` + "`some`" + `, ` + "`lots`" + `, or ` + "`max`" + ` should be set to ` + "`true`" + `, though the provider does not enforce this.`,
+							Optional: true,
 						},
 					},
 				},
-				MarkdownDescription: "Ice configuration block. Only one of some, lots, or max should be true. Use dynamic blocks to conditionally set values.",
+				MarkdownDescription: `Optional nested block for configuring ice preferences. This is a **list block**, meaning you can specify multiple ` + "`ice`" + ` blocks.
+
+**Type:** ` + "`list(object)`" + ` (optional)
+
+**Learning Purpose:**
+This block demonstrates several Terraform concepts:
+- **Nested Blocks**: How to structure complex configuration
+- **List Blocks**: Multiple blocks of the same type
+- **Dynamic Blocks**: Use ` + "`dynamic \"ice\"`" + ` to conditionally create ice configurations
+
+**Example Usage:**
+
+` + "```hcl" + `
+# Single ice block
+ice {
+  some = true
+}
+
+# Multiple ice blocks (list)
+ice {
+  some = true
+}
+ice {
+  lots = true
+}
+
+# Using dynamic blocks
+dynamic "ice" {
+  for_each = var.include_ice ? [1] : []
+  content {
+    some = true
+  }
+}
+` + "```" + `
+
+**Block Attributes:**
+- ` + "`some`" + ` (bool, optional): Request some ice
+- ` + "`lots`" + ` (bool, optional): Request lots of ice
+- ` + "`max`" + ` (bool, optional): Request maximum ice
+
+**Best Practices:**
+- Use ` + "`dynamic`" + ` blocks when ice configuration is conditional
+- Only set one of the boolean attributes to ` + "`true`" + ` per block
+- This block is optional - drinks can be created without ice configuration`,
 			},
 		},
 	}
