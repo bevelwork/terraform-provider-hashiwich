@@ -27,3 +27,4 @@ Mock sandwich resource for instructional purposes. Combines bread and meat resou
 ### Read-Only
 
 - `id` (String) Sandwich identifier
+- `name` (String) The name of the sandwich in the format '{meat} on {bread}'

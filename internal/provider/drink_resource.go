@@ -3,7 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
-	"time"
+	"math/big"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -24,7 +24,7 @@ func NewDrinkResource() resource.Resource {
 
 // DrinkResource defines the resource implementation.
 type DrinkResource struct {
-	client any
+	client *ProviderConfig
 }
 
 // IceModel describes the ice block data model.
@@ -38,7 +38,8 @@ type IceModel struct {
 type DrinkResourceModel struct {
 	Description types.String `tfsdk:"description"`
 	Kind        types.String `tfsdk:"kind"`
-	Ice         types.List    `tfsdk:"ice"`
+	Ice         types.List   `tfsdk:"ice"`
+	Price       types.Number `tfsdk:"price"`
 	Id          types.String `tfsdk:"id"`
 }
 
@@ -58,6 +59,10 @@ func (r *DrinkResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 			"kind": schema.StringAttribute{
 				MarkdownDescription: "The kind of pop/soda",
 				Required:            true,
+			},
+			"price": schema.NumberAttribute{
+				Computed:            true,
+				MarkdownDescription: "The price of the drink in dollars (hardcoded to $1.00)",
 			},
 			"id": schema.StringAttribute{
 				Computed:            true,
@@ -97,7 +102,16 @@ func (r *DrinkResource) Configure(ctx context.Context, req resource.ConfigureReq
 		return
 	}
 
-	r.client = req.ProviderData
+	config, ok := req.ProviderData.(*ProviderConfig)
+	if !ok {
+		resp.Diagnostics.AddError(
+			"Unexpected Provider Data Type",
+			"Expected *ProviderConfig, got something else",
+		)
+		return
+	}
+
+	r.client = config
 }
 
 func (r *DrinkResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -150,7 +164,11 @@ func (r *DrinkResource) Create(ctx context.Context, req resource.CreateRequest, 
 	}
 
 	// Simulate API delay
-	time.Sleep(300 * time.Millisecond)
+
+	// Set base price: $1.00, then apply upcharge
+	basePrice := big.NewFloat(1.00)
+	finalPrice := ApplyUpcharge(basePrice, r.client.Upcharge)
+	data.Price = types.NumberValue(finalPrice)
 
 	// Mock resource creation - generate a fake ID based on the kind
 	id := fmt.Sprintf("drink-%s-%d", data.Kind.ValueString(), len(data.Kind.ValueString()))
@@ -176,7 +194,9 @@ func (r *DrinkResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	}
 
 	// Simulate API delay
-	time.Sleep(300 * time.Millisecond)
+
+	// Ensure price is set (in case it wasn't in state)
+	data.Price = types.NumberValue(big.NewFloat(1.00))
 
 	// Mock resource read - just return the existing state
 	// In a real implementation, this would fetch from an API
@@ -235,7 +255,6 @@ func (r *DrinkResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	}
 
 	// Simulate API delay
-	time.Sleep(300 * time.Millisecond)
 
 	// Mock resource update - regenerate ID if kind changed
 	var state DrinkResourceModel
@@ -253,6 +272,9 @@ func (r *DrinkResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		data.Id = state.Id
 	}
 
+	// Ensure price is always set to $1.00
+	data.Price = types.NumberValue(big.NewFloat(1.00))
+
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -268,7 +290,6 @@ func (r *DrinkResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 	}
 
 	// Simulate API delay
-	time.Sleep(300 * time.Millisecond)
 
 	// Mock resource deletion - nothing to do
 	tflog.Trace(ctx, "deleted a drink resource", map[string]any{

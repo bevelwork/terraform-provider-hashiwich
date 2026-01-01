@@ -3,7 +3,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -30,7 +29,7 @@ type BagResource struct {
 // BagResourceModel describes the resource data model.
 type BagResourceModel struct {
 	Description types.String `tfsdk:"description"`
-	SandwichIds types.List   `tfsdk:"sandwich_ids"`
+	Sandwiches  types.List   `tfsdk:"sandwiches"`
 	Id          types.String `tfsdk:"id"`
 }
 
@@ -47,7 +46,7 @@ func (r *BagResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				MarkdownDescription: "A description of the bag resource",
 				Optional:            true,
 			},
-			"sandwich_ids": schema.ListAttribute{
+			"sandwiches": schema.ListAttribute{
 				ElementType:         types.StringType,
 				MarkdownDescription: "List of sandwich resource IDs to include in the bag",
 				Required:            true,
@@ -83,11 +82,10 @@ func (r *BagResource) Create(ctx context.Context, req resource.CreateRequest, re
 	}
 
 	// Simulate API delay
-	time.Sleep(300 * time.Millisecond)
 
 	// Mock resource creation - generate a fake ID based on sandwich IDs
 	var sandwichIds []types.String
-	resp.Diagnostics.Append(data.SandwichIds.ElementsAs(ctx, &sandwichIds, false)...)
+	resp.Diagnostics.Append(data.Sandwiches.ElementsAs(ctx, &sandwichIds, false)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -96,8 +94,8 @@ func (r *BagResource) Create(ctx context.Context, req resource.CreateRequest, re
 	data.Id = types.StringValue(id)
 
 	tflog.Trace(ctx, "created a bag resource", map[string]any{
-		"id":           data.Id.ValueString(),
-		"sandwich_ids": len(sandwichIds),
+		"id":         data.Id.ValueString(),
+		"sandwiches": len(sandwichIds),
 	})
 
 	// Save data into Terraform state
@@ -115,7 +113,6 @@ func (r *BagResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 	}
 
 	// Simulate API delay
-	time.Sleep(300 * time.Millisecond)
 
 	// Mock resource read - just return the existing state
 	// In a real implementation, this would fetch from an API
@@ -135,19 +132,18 @@ func (r *BagResource) Update(ctx context.Context, req resource.UpdateRequest, re
 	}
 
 	// Simulate API delay
-	time.Sleep(300 * time.Millisecond)
 
-	// Mock resource update - regenerate ID if sandwich_ids changed
+	// Mock resource update - regenerate ID if sandwiches changed
 	var state BagResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// If sandwich_ids changed, regenerate ID
-	if !data.SandwichIds.Equal(state.SandwichIds) {
+	// If sandwiches changed, regenerate ID
+	if !data.Sandwiches.Equal(state.Sandwiches) {
 		var sandwichIds []types.String
-		resp.Diagnostics.Append(data.SandwichIds.ElementsAs(ctx, &sandwichIds, false)...)
+		resp.Diagnostics.Append(data.Sandwiches.ElementsAs(ctx, &sandwichIds, false)...)
 		if resp.Diagnostics.HasError() {
 			return
 		}
@@ -173,7 +169,6 @@ func (r *BagResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 	}
 
 	// Simulate API delay
-	time.Sleep(300 * time.Millisecond)
 
 	// Mock resource deletion - nothing to do
 	tflog.Trace(ctx, "deleted a bag resource", map[string]any{

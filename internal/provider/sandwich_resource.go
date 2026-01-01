@@ -3,8 +3,8 @@ package provider
 import (
 	"context"
 	"fmt"
+	"math/big"
 	"strings"
-	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -25,7 +25,7 @@ func NewSandwichResource() resource.Resource {
 
 // SandwichResource defines the resource implementation.
 type SandwichResource struct {
-	client any
+	client *ProviderConfig
 }
 
 // SandwichResourceModel describes the resource data model.
@@ -34,6 +34,7 @@ type SandwichResourceModel struct {
 	BreadId     types.String `tfsdk:"bread_id"`
 	MeatId      types.String `tfsdk:"meat_id"`
 	Name        types.String `tfsdk:"name"`
+	Price       types.Number `tfsdk:"price"`
 	Id          types.String `tfsdk:"id"`
 }
 
@@ -65,6 +66,10 @@ func (r *SandwichResource) Schema(ctx context.Context, req resource.SchemaReques
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
+			"price": schema.NumberAttribute{
+				Computed:            true,
+				MarkdownDescription: "The price of the sandwich in dollars (hardcoded to $5.00)",
+			},
 			"id": schema.StringAttribute{
 				Computed:            true,
 				MarkdownDescription: "Sandwich identifier",
@@ -82,7 +87,16 @@ func (r *SandwichResource) Configure(ctx context.Context, req resource.Configure
 		return
 	}
 
-	r.client = req.ProviderData
+	config, ok := req.ProviderData.(*ProviderConfig)
+	if !ok {
+		resp.Diagnostics.AddError(
+			"Unexpected Provider Data Type",
+			"Expected *ProviderConfig, got something else",
+		)
+		return
+	}
+
+	r.client = config
 }
 
 func (r *SandwichResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -96,7 +110,6 @@ func (r *SandwichResource) Create(ctx context.Context, req resource.CreateReques
 	}
 
 	// Simulate API delay
-	time.Sleep(300 * time.Millisecond)
 
 	// Extract meat and bread kinds from their IDs
 	meatKind := extractKindFromId(data.MeatId.ValueString(), "meat")
@@ -105,6 +118,11 @@ func (r *SandwichResource) Create(ctx context.Context, req resource.CreateReques
 	// Generate name in format "{meat} on {bread}"
 	name := fmt.Sprintf("%s on %s", meatKind, breadKind)
 	data.Name = types.StringValue(name)
+
+	// Set base price: $5.00, then apply upcharge
+	basePrice := big.NewFloat(5.00)
+	finalPrice := ApplyUpcharge(basePrice, r.client.Upcharge)
+	data.Price = types.NumberValue(finalPrice)
 
 	// Mock resource creation - generate a fake ID based on bread and meat IDs
 	id := fmt.Sprintf("sandwich-%s-%s", data.BreadId.ValueString(), data.MeatId.ValueString())
@@ -131,13 +149,15 @@ func (r *SandwichResource) Read(ctx context.Context, req resource.ReadRequest, r
 	}
 
 	// Simulate API delay
-	time.Sleep(300 * time.Millisecond)
 
 	// Regenerate name from IDs in case bread_id or meat_id changed externally
 	meatKind := extractKindFromId(data.MeatId.ValueString(), "meat")
 	breadKind := extractKindFromId(data.BreadId.ValueString(), "bread")
 	name := fmt.Sprintf("%s on %s", meatKind, breadKind)
 	data.Name = types.StringValue(name)
+
+	// Ensure price is set (in case it wasn't in state)
+	data.Price = types.NumberValue(big.NewFloat(5.00))
 
 	// Mock resource read - just return the existing state
 	// In a real implementation, this would fetch from an API
@@ -157,7 +177,6 @@ func (r *SandwichResource) Update(ctx context.Context, req resource.UpdateReques
 	}
 
 	// Simulate API delay
-	time.Sleep(300 * time.Millisecond)
 
 	// Mock resource update - regenerate ID if bread_id or meat_id changed
 	var state SandwichResourceModel
@@ -182,6 +201,9 @@ func (r *SandwichResource) Update(ctx context.Context, req resource.UpdateReques
 		data.Name = state.Name
 	}
 
+	// Ensure price is always set to $5.00
+	data.Price = types.NumberValue(big.NewFloat(5.00))
+
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -197,7 +219,6 @@ func (r *SandwichResource) Delete(ctx context.Context, req resource.DeleteReques
 	}
 
 	// Simulate API delay
-	time.Sleep(300 * time.Millisecond)
 
 	// Mock resource deletion - nothing to do
 	tflog.Trace(ctx, "deleted a sandwich resource", map[string]any{

@@ -24,8 +24,9 @@ type OrderDataSource struct {
 
 // OrderDataSourceModel describes the data source data model.
 type OrderDataSourceModel struct {
-	Order types.Object `tfsdk:"order"`
-	Id    types.String `tfsdk:"id"`
+	Sandwich types.Object `tfsdk:"sandwich"`
+	Drink    types.Object `tfsdk:"drink"`
+	Id       types.String `tfsdk:"id"`
 }
 
 func (d *OrderDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -37,58 +38,52 @@ func (d *OrderDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 		MarkdownDescription: "Mock data source that returns an order with sandwich and drink specifications for instructional purposes",
 
 		Attributes: map[string]schema.Attribute{
-			"order": schema.SingleNestedAttribute{
+			"sandwich": schema.SingleNestedAttribute{
 				Attributes: map[string]schema.Attribute{
-					"sandwich": schema.SingleNestedAttribute{
-						Attributes: map[string]schema.Attribute{
-							"bread": schema.StringAttribute{
-								MarkdownDescription: "The bread type",
-								Computed:            true,
-							},
-							"meat": schema.StringAttribute{
-								MarkdownDescription: "The meat type",
-								Computed:            true,
-							},
-							"name": schema.StringAttribute{
-								MarkdownDescription: "The sandwich name",
-								Computed:            true,
-							},
-						},
-						MarkdownDescription: "Sandwich specifications",
+					"bread": schema.StringAttribute{
+						MarkdownDescription: "The bread type",
 						Computed:            true,
 					},
-					"drink": schema.SingleNestedAttribute{
-						Attributes: map[string]schema.Attribute{
-							"kind": schema.StringAttribute{
-								MarkdownDescription: "The drink kind",
-								Computed:            true,
-							},
-							"ice": schema.ListNestedAttribute{
-								NestedObject: schema.NestedAttributeObject{
-									Attributes: map[string]schema.Attribute{
-										"some": schema.BoolAttribute{
-											MarkdownDescription: "Some ice",
-											Computed:            true,
-										},
-										"lots": schema.BoolAttribute{
-											MarkdownDescription: "Lots of ice",
-											Computed:            true,
-										},
-										"max": schema.BoolAttribute{
-											MarkdownDescription: "Maximum ice",
-											Computed:            true,
-										},
-									},
-								},
-								MarkdownDescription: "Ice configuration",
-								Computed:            true,
-							},
-						},
-						MarkdownDescription: "Drink specifications",
+					"meat": schema.StringAttribute{
+						MarkdownDescription: "The meat type",
+						Computed:            true,
+					},
+					"name": schema.StringAttribute{
+						MarkdownDescription: "The sandwich name",
 						Computed:            true,
 					},
 				},
-				MarkdownDescription: "Order containing sandwich and drink specifications",
+				MarkdownDescription: "Sandwich specifications",
+				Computed:            true,
+			},
+			"drink": schema.SingleNestedAttribute{
+				Attributes: map[string]schema.Attribute{
+					"kind": schema.StringAttribute{
+						MarkdownDescription: "The drink kind",
+						Computed:            true,
+					},
+					"ice": schema.ListNestedAttribute{
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"some": schema.BoolAttribute{
+									MarkdownDescription: "Some ice",
+									Computed:            true,
+								},
+								"lots": schema.BoolAttribute{
+									MarkdownDescription: "Lots of ice",
+									Computed:            true,
+								},
+								"max": schema.BoolAttribute{
+									MarkdownDescription: "Maximum ice",
+									Computed:            true,
+								},
+							},
+						},
+						MarkdownDescription: "Ice configuration",
+						Computed:            true,
+					},
+				},
+				MarkdownDescription: "Drink specifications",
 				Computed:            true,
 			},
 			"id": schema.StringAttribute{
@@ -162,64 +157,41 @@ func (d *OrderDataSource) Read(ctx context.Context, req datasource.ReadRequest, 
 		"ice":  ice,
 	}
 
-	orderValue := map[string]attr.Value{
-		"sandwich": types.ObjectValueMust(
-			map[string]attr.Type{
-				"bread": types.StringType,
-				"meat":  types.StringType,
-				"name":  types.StringType,
-			},
-			sandwichSpec,
-		),
-		"drink": types.ObjectValueMust(
-			map[string]attr.Type{
-				"kind": types.StringType,
-				"ice": types.ListType{
-					ElemType: types.ObjectType{
-						AttrTypes: map[string]attr.Type{
-							"some": types.BoolType,
-							"lots": types.BoolType,
-							"max":  types.BoolType,
-						},
-					},
-				},
-			},
-			drinkSpec,
-		),
-	}
-
-	order, diags := types.ObjectValue(
+	sandwich, diags := types.ObjectValue(
 		map[string]attr.Type{
-			"sandwich": types.ObjectType{
-				AttrTypes: map[string]attr.Type{
-					"bread": types.StringType,
-					"meat":  types.StringType,
-					"name":  types.StringType,
-				},
-			},
-			"drink": types.ObjectType{
-				AttrTypes: map[string]attr.Type{
-					"kind": types.StringType,
-					"ice": types.ListType{
-						ElemType: types.ObjectType{
-							AttrTypes: map[string]attr.Type{
-								"some": types.BoolType,
-								"lots": types.BoolType,
-								"max":  types.BoolType,
-							},
-						},
-					},
-				},
-			},
+			"bread": types.StringType,
+			"meat":  types.StringType,
+			"name":  types.StringType,
 		},
-		orderValue,
+		sandwichSpec,
 	)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	data.Order = order
+	drink, diags := types.ObjectValue(
+		map[string]attr.Type{
+			"kind": types.StringType,
+			"ice": types.ListType{
+				ElemType: types.ObjectType{
+					AttrTypes: map[string]attr.Type{
+						"some": types.BoolType,
+						"lots": types.BoolType,
+						"max":  types.BoolType,
+					},
+				},
+			},
+		},
+		drinkSpec,
+	)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	data.Sandwich = sandwich
+	data.Drink = drink
 	data.Id = types.StringValue("order")
 
 	tflog.Trace(ctx, "read order data source")

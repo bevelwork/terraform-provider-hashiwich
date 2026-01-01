@@ -2,7 +2,7 @@ package provider
 
 import (
 	"context"
-	"net/http"
+	"math/big"
 
 	"github.com/hashicorp/terraform-plugin-framework/action"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -31,6 +31,25 @@ type hwProvider struct {
 // hwProviderModel describes the provider data model.
 type hwProviderModel struct {
 	Endpoint types.String `tfsdk:"endpoint"`
+	Upcharge types.Number `tfsdk:"upcharge"`
+}
+
+// ProviderConfig holds the provider configuration data passed to resources
+type ProviderConfig struct {
+	Upcharge *big.Float
+}
+
+// ApplyUpcharge applies the upcharge flat amount to a base price
+// upcharge is a flat dollar amount added to the base price
+func ApplyUpcharge(basePrice *big.Float, upcharge *big.Float) *big.Float {
+	if upcharge == nil || upcharge.Sign() == 0 {
+		return basePrice
+	}
+	
+	var result big.Float
+	// Calculate: basePrice + upcharge
+	result.Add(basePrice, upcharge)
+	return &result
 }
 
 func (p *hwProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -43,6 +62,10 @@ func (p *hwProvider) Schema(ctx context.Context, req provider.SchemaRequest, res
 		Attributes: map[string]schema.Attribute{
 			"endpoint": schema.StringAttribute{
 				MarkdownDescription: "Example provider attribute",
+				Optional:            true,
+			},
+			"upcharge": schema.NumberAttribute{
+				MarkdownDescription: "Flat dollar amount to add to all resource prices (e.g., 0.50 adds $0.50 to each item, 1.00 adds $1.00)",
 				Optional:            true,
 			},
 		},
@@ -58,13 +81,22 @@ func (p *hwProvider) Configure(ctx context.Context, req provider.ConfigureReques
 		return
 	}
 
-	// Configuration values are now available.
-	// if data.Endpoint.IsNull() { /* ... */ }
+	// Extract upcharge value (default to 0 if not provided)
+	var upcharge *big.Float
+	if data.Upcharge.IsNull() || data.Upcharge.IsUnknown() {
+		upcharge = big.NewFloat(0.0)
+	} else {
+		upcharge = data.Upcharge.ValueBigFloat()
+	}
 
-	// Example client configuration for data sources and resources
-	client := http.DefaultClient
-	resp.DataSourceData = client
-	resp.ResourceData = client
+	// Create provider config with upcharge
+	config := &ProviderConfig{
+		Upcharge: upcharge,
+	}
+
+	// Pass config to both resources and data sources (for menu pricing with upcharge)
+	resp.DataSourceData = config
+	resp.ResourceData = config
 }
 
 func (p *hwProvider) Resources(ctx context.Context) []func() resource.Resource {
@@ -74,6 +106,21 @@ func (p *hwProvider) Resources(ctx context.Context) []func() resource.Resource {
 		NewSandwichResource,
 		NewBagResource,
 		NewDrinkResource,
+		NewSoupResource,
+		NewSaladResource,
+		NewNapkinResource,
+		NewCrackerResource,
+		NewSilverwareResource,
+		NewDogtreatResource,
+		NewCookieResource,
+		NewBrownieResource,
+		NewStroopwafelResource,
+		NewOvenResource,
+		NewCookResource,
+		NewTablesResource,
+		NewChairsResource,
+		NewFridgeResource,
+		NewStoreResource,
 	}
 }
 
@@ -86,6 +133,7 @@ func (p *hwProvider) DataSources(ctx context.Context) []func() datasource.DataSo
 		NewDeliMeatsDataSource,
 		NewCondimentsDataSource,
 		NewOrderDataSource,
+		NewMenuDataSource,
 	}
 }
 
